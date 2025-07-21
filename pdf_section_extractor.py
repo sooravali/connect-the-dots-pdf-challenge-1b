@@ -3,7 +3,15 @@ PDF Text Extraction Utilities for Challenge 1B
 Reuses and extends Challenge 1A components for document analysis.
 """
 
-import fitz  # PyMuPDF
+# Try PyMuPDF import, fall back to pdfminer only if available
+PYMUPDF_AVAILABLE = False
+try:
+    import fitz  # PyMuPDF
+    PYMUPDF_AVAILABLE = True
+except ImportError:
+    print("PyMuPDF not available - using pdfminer.six only")
+    pass
+
 from pdfminer.high_level import extract_text as pdfminer_extract_text
 from pathlib import Path
 import logging
@@ -32,14 +40,20 @@ class PDFSectionExtractor:
         Returns:
             Dictionary with document metadata and sections
         """
-        try:
-            return self._extract_with_pymupdf(pdf_path)
-        except Exception as e:
-            logger.warning(f"PyMuPDF extraction failed for {pdf_path}: {e}")
+        if PYMUPDF_AVAILABLE:
+            try:
+                return self._extract_with_pymupdf(pdf_path)
+            except Exception as e:
+                logger.warning(f"PyMuPDF extraction failed for {pdf_path}: {e}")
+                return self._extract_with_pdfminer_fallback(pdf_path)
+        else:
             return self._extract_with_pdfminer_fallback(pdf_path)
     
     def _extract_with_pymupdf(self, pdf_path: Union[str, Path]) -> Dict:
         """Extract sections using PyMuPDF with heading detection."""
+        if not PYMUPDF_AVAILABLE:
+            raise ImportError("PyMuPDF not available")
+            
         doc = fitz.open(str(pdf_path))
         
         # Extract all text with structure
@@ -65,24 +79,18 @@ class PDFSectionExtractor:
         }
     
     def _extract_with_pdfminer_fallback(self, pdf_path: Union[str, Path]) -> Dict:
-        """Fallback extraction using pdfminer.six."""
+        """Enhanced fallback extraction using pdfminer.six with section detection."""
         logger.info(f"Using pdfminer fallback for {pdf_path}")
         
         try:
             text = pdfminer_extract_text(str(pdf_path))
             
-            # Create a single section if no structure can be detected
-            sections = [{
-                "title": f"Content from {Path(pdf_path).name}",
-                "content": text,
-                "start_page": 1,
-                "end_page": 1,
-                "section_type": "document"
-            }]
+            # Try to identify sections using patterns
+            sections = self._identify_sections_from_text(text)
             
             return {
                 "filename": Path(pdf_path).name,
-                "total_pages": 1,
+                "total_pages": self._estimate_pages(text),
                 "sections": sections,
                 "full_text": text
             }
@@ -95,6 +103,75 @@ class PDFSectionExtractor:
                 "sections": [],
                 "full_text": ""
             }
+    
+    def _estimate_pages(self, text: str) -> int:
+        """Estimate number of pages from text length."""
+        # Rough estimate: ~3000 chars per page
+        return max(1, len(text) // 3000)
+    
+    def _identify_sections_from_text(self, text: str) -> List[Dict]:
+        """Identify sections from plain text using patterns."""
+        sections = []
+        
+        # Split text into potential sections
+        paragraphs = [p.strip() for p in text.split('\n\n') if p.strip()]
+        
+        current_section = {
+            "title": "Document Content",
+            "content": "",
+            "start_page": 1,
+            "end_page": 1,
+            "section_type": "content"
+        }
+        
+        for i, paragraph in enumerate(paragraphs):
+            # Check if paragraph looks like a heading
+            if self._looks_like_heading(paragraph):
+                # Save previous section if it has content
+                if current_section["content"].strip():
+                    current_section["content"] = current_section["content"][:self.max_section_length]
+                    sections.append(current_section.copy())
+                
+                # Start new section
+                current_section = {
+                    "title": paragraph[:100],  # Use first part as title
+                    "content": paragraph,
+                    "start_page": max(1, i // 10),  # Rough page estimate
+                    "end_page": max(1, i // 10),
+                    "section_type": "heading"
+                }
+            else:
+                # Add to current section
+                current_section["content"] += "\n" + paragraph
+                current_section["end_page"] = max(1, i // 10)
+        
+        # Add final section
+        if current_section["content"].strip():
+            current_section["content"] = current_section["content"][:self.max_section_length]
+            sections.append(current_section)
+        
+        # If no sections identified, create one big section
+        if not sections:
+            sections.append({
+                "title": "Complete Document",
+                "content": text[:self.max_section_length],
+                "start_page": 1,
+                "end_page": self._estimate_pages(text),
+                "section_type": "document"
+            })
+        
+        return sections
+    
+    def _looks_like_heading(self, text: str) -> bool:
+        """Check if text looks like a section heading."""
+        text = text.strip()
+        return (
+            len(text) < 200 and  # Short text
+            (text.isupper() or  # All caps
+             text.endswith(':') or  # Ends with colon
+             bool(re.match(r'^\\d+\\.', text)) or  # Starts with number
+             bool(re.match(r'^[A-Z][^.!?]*$', text)))  # Title case, no punctuation
+        )
     
     def _identify_sections(self, full_text: str, page_texts: Dict) -> List[Dict]:
         """Identify document sections using heading patterns and page breaks."""

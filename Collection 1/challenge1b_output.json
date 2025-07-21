@@ -11,102 +11,98 @@
     ],
     "persona": "Travel Planner",
     "job_to_be_done": "Plan a trip of 4 days for a group of 10 college friends.",
-    "processing_timestamp": "2025-07-18T16:43:29.317707"
+    "processing_timestamp": "2025-07-22T01:23:10.445661",
+    "total_sections_analyzed": 187,
+    "semantic_model": "all-MiniLM-L6-v2",
+    "processing_time_seconds": 6.1
   },
   "extracted_sections": [
     {
-      "document": "South of France - Restaurants and Hotels.pdf",
-      "section_title": "Untitled Section",
+      "document": "South of France - Tips and Tricks.pdf",
+      "section_title": "Packing for All Seasons",
       "importance_rank": 1,
-      "page_number": 1
+      "page_number": 2
     },
     {
-      "document": "South of France - Things to Do.pdf",
-      "section_title": "Untitled Section",
+      "document": "South of France - Traditions and Culture.pdf",
+      "section_title": "Festivals and Celebrations",
       "importance_rank": 2,
       "page_number": 1
     },
     {
-      "document": "South of France - Tips and Tricks.pdf",
-      "section_title": "Untitled Section",
+      "document": "South of France - Things to Do.pdf",
+      "section_title": "Festivals and Events",
       "importance_rank": 3,
-      "page_number": 1
+      "page_number": 9
     },
     {
-      "document": "South of France - Cities.pdf",
-      "section_title": "Untitled Section",
+      "document": "South of France - Tips and Tricks.pdf",
+      "section_title": "Packing for Kids",
       "importance_rank": 4,
-      "page_number": 1
+      "page_number": 8
     },
     {
-      "document": "South of France - History.pdf",
-      "section_title": "Untitled Section",
+      "document": "South of France - Tips and Tricks.pdf",
+      "section_title": "Packing for Adults",
       "importance_rank": 5,
-      "page_number": 1
+      "page_number": 5
     },
     {
-      "document": "South of France - Traditions and Culture.pdf",
-      "section_title": "Untitled Section",
+      "document": "South of France - Restaurants and Hotels.pdf",
+      "section_title": "Restaurants",
       "importance_rank": 6,
       "page_number": 1
     },
     {
       "document": "South of France - Cuisine.pdf",
-      "section_title": "Untitled Section",
+      "section_title": "Must-Visit Restaurants",
       "importance_rank": 7,
       "page_number": 1
+    },
+    {
+      "document": "South of France - Things to Do.pdf",
+      "section_title": "Culinary Delights",
+      "importance_rank": 8,
+      "page_number": 7
+    },
+    {
+      "document": "South of France - Restaurants and Hotels.pdf",
+      "section_title": "Hotels",
+      "importance_rank": 9,
+      "page_number": 8
+    },
+    {
+      "document": "South of France - Things to Do.pdf",
+      "section_title": "Nightlife and Entertainment",
+      "importance_rank": 10,
+      "page_number": 18
     }
   ],
   "subsection_analysis": [
     {
-      "document": "South of France - Restaurants and Hotels.pdf",
-      "refined_text": "• \nLe Mirazur (Menton): Ranked a.",
-      "page_number": 1
+      "document": "South of France - Tips and Tricks.pdf",
+      "refined_text": "Packing for All Seasons",
+      "page_number": 2
     },
     {
-      "document": "South of France - Restaurants and Hotels.pdf",
-      "refined_text": "\\n[PAGE 2]\\nRestaurants \nBudget-Friendly Restaurants \n• \nChez Pipo (Nice): Famous for its socca, a traditional Niçoise chickpea pancake, this \ncasual eatery oﬀers delicious and aﬀordable local dishes. The rustic ambiance and \nfriendly service make it a favorite among locals and tourists alike.",
+      "document": "South of France - Traditions and Culture.pdf",
+      "refined_text": "Festivals and Celebrations",
       "page_number": 1
     },
     {
       "document": "South of France - Things to Do.pdf",
-      "refined_text": "• \nCamargue: Explore the unique wetlands on horseback or by bike. • \nMont Ventoux: Challenge yourself with a hike or bike ride up this iconic mountain. • \nGorges du Tarn: Hike through dramatic gorges and enjoy breathtaking views.",
-      "page_number": 1
-    },
-    {
-      "document": "South of France - Things to Do.pdf",
-      "refined_text": "• \nMenton: Visit the serene beaches and beautiful gardens in this charming town near \nthe Italian border. Water Sports \n• \nCannes, Nice, and Saint-Tropez: Try jet skiing or parasailing for a thrill. • \nToulon: Dive into the underwater world with scuba diving excursions to explore \nwrecks.",
-      "page_number": 1
+      "refined_text": "Festivals and Events",
+      "page_number": 9
     },
     {
       "document": "South of France - Tips and Tricks.pdf",
-      "refined_text": "Gadgets and Accessories \n• \nElectronics: Smartphone, charger, power bank, and other devices. Bring a travel \nadapter if needed. • \nCamera: Capture memories with a c.",
-      "page_number": 1
+      "refined_text": "Packing for Kids",
+      "page_number": 8
     },
     {
       "document": "South of France - Tips and Tricks.pdf",
-      "refined_text": "• \nActive Wear: If you plan on hiking or outdoor activities, pack activewear like leggings, \nshorts, and moisture-wicking tops. • \nSwimwear: Don't forget your swimsuit for beach or pool visits. • \nAccessories: A stylish yet functional bag, a lightweight scarf, and a versatile jacket.",
-      "page_number": 1
-    },
-    {
-      "document": "South of France - Cities.pdf",
-      "refined_text": "• \nOld Town (Vieux Nice): The historic center of Nice is a labyrinth of narrow streets, \nbaroque churches, and bustling markets. Don't miss the Cours Saleya market, where \nyou can find fresh produce.",
-      "page_number": 1
-    },
-    {
-      "document": "South of France - Cities.pdf",
-      "refined_text": "• \nStreet Art in Cours Julien: Explore the vibrant street art scene in the Cours Julien \ndistrict. Cultural Highlights \nMarseille is known for its vibrant arts scene, with numerous galleries, theaters, and music \nvenues.",
-      "page_number": 1
-    },
-    {
-      "document": "South of France - History.pdf",
-      "refined_text": "• \nOld Town (Vieux Nice): The historic center of Nice is a labyrinth of narrow streets, \nbaroque churches, and bustling markets. Don't miss the Cours Saleya market, where \nyou can find fresh produce, flowers, and local delicacies.",
-      "page_number": 1
-    },
-    {
-      "document": "South of France - History.pdf",
-      "refined_text": "• \nCarnival of Nice: One of the most famous carnivals in France, the Carnival of Nice \ndates back to 1873 and features elaborate parades, floats, and flower battles4.",
-      "page_number": 1
+      "refined_text": "Packing for Adults",
+      "page_number": 5
     }
   ]
 }

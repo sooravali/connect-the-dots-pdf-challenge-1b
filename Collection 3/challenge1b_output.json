@@ -13,114 +13,98 @@
     ],
     "persona": "Food Contractor",
     "job_to_be_done": "Prepare a vegetarian buffet-style dinner menu for a corporate gathering, including gluten-free items.",
-    "processing_timestamp": "2025-07-18T16:51:58.613290"
+    "processing_timestamp": "2025-07-22T01:25:58.649544",
+    "total_sections_analyzed": 764,
+    "semantic_model": "all-MiniLM-L6-v2",
+    "processing_time_seconds": 20.19
   },
   "extracted_sections": [
     {
       "document": "Dinner Ideas - Sides_1.pdf",
-      "section_title": "Untitled Section",
+      "section_title": "Aloo Gobi \n•",
       "importance_rank": 1,
       "page_number": 1
     },
     {
-      "document": "Dinner Ideas - Mains_1.pdf",
-      "section_title": "Untitled Section",
+      "document": "Dinner Ideas - Sides_3.pdf",
+      "section_title": "Naan \n•",
       "importance_rank": 2,
-      "page_number": 1
+      "page_number": 21
     },
     {
-      "document": "Lunch Ideas.pdf",
-      "section_title": "Untitled Section",
+      "document": "Dinner Ideas - Sides_3.pdf",
+      "section_title": "Horta \n•",
       "importance_rank": 3,
       "page_number": 1
     },
     {
-      "document": "Dinner Ideas - Mains_3.pdf",
-      "section_title": "Untitled Section",
+      "document": "Dinner Ideas - Sides_2.pdf",
+      "section_title": "Festival \n•",
       "importance_rank": 4,
-      "page_number": 1
+      "page_number": 15
     },
     {
-      "document": "Dinner Ideas - Sides_4.pdf",
-      "section_title": "Untitled Section",
+      "document": "Dinner Ideas - Sides_1.pdf",
+      "section_title": "Canh Chua",
       "importance_rank": 5,
-      "page_number": 1
+      "page_number": 18
     },
     {
       "document": "Dinner Ideas - Sides_3.pdf",
-      "section_title": "Untitled Section",
+      "section_title": "Oi Muchim",
       "importance_rank": 6,
-      "page_number": 1
-    },
-    {
-      "document": "Dinner Ideas - Sides_2.pdf",
-      "section_title": "Untitled Section",
-      "importance_rank": 7,
-      "page_number": 1
+      "page_number": 24
     },
     {
       "document": "Dinner Ideas - Mains_2.pdf",
-      "section_title": "Untitled Section",
-      "importance_rank": 8,
-      "page_number": 1
+      "section_title": "Coq au Vin",
+      "importance_rank": 7,
+      "page_number": 10
     },
     {
-      "document": "Breakfast Ideas.pdf",
-      "section_title": "Untitled Section",
+      "document": "Dinner Ideas - Sides_2.pdf",
+      "section_title": "Edamame \n•",
+      "importance_rank": 8,
+      "page_number": 7
+    },
+    {
+      "document": "Dinner Ideas - Sides_1.pdf",
+      "section_title": "Banh Xeo \n•",
       "importance_rank": 9,
-      "page_number": 1
+      "page_number": 7
+    },
+    {
+      "document": "Dinner Ideas - Sides_2.pdf",
+      "section_title": "Falafel \n•",
+      "importance_rank": 10,
+      "page_number": 11
     }
   ],
   "subsection_analysis": [
     {
       "document": "Dinner Ideas - Sides_1.pdf",
-      "refined_text": "o Add salt to taste and serve.",
+      "refined_text": "Aloo Gobi \n•",
       "page_number": 1
+    },
+    {
+      "document": "Dinner Ideas - Sides_3.pdf",
+      "refined_text": "Naan \n•",
+      "page_number": 21
+    },
+    {
+      "document": "Dinner Ideas - Sides_3.pdf",
+      "refined_text": "Horta \n•",
+      "page_number": 1
+    },
+    {
+      "document": "Dinner Ideas - Sides_2.pdf",
+      "refined_text": "Festival \n•",
+      "page_number": 15
     },
     {
       "document": "Dinner Ideas - Sides_1.pdf",
-      "refined_text": "o Heat dashi broth with soy sauce and mirin. o Serve tofu in broth, topped with green onions and grated daikon.",
-      "page_number": 1
-    },
-    {
-      "document": "Dinner Ideas - Mains_1.pdf",
-      "refined_text": "• \nCook spaghetti according to package instructions. • \nServe Bolognese sauce over spaghetti, garnished with grated Parmesan cheese.",
-      "page_number": 1
-    },
-    {
-      "document": "Dinner Ideas - Mains_1.pdf",
-      "refined_text": "• \nReturn shrimp to the skillet and toss to coat in the sauce. • \nSeason with salt and pepper, stir in chopped parsley. • \nServe over cooked pasta.",
-      "page_number": 1
-    },
-    {
-      "document": "Lunch Ideas.pdf",
-      "refined_text": "• \nDrizz.",
-      "page_number": 1
-    },
-    {
-      "document": "Lunch Ideas.pdf",
-      "refined_text": "• \nTop with the second slice of bread and cut in half.",
-      "page_number": 1
-    },
-    {
-      "document": "Dinner Ideas - Mains_3.pdf",
-      "refined_text": "5 ounces) tomato puree \n• \n1/2 cup hea.",
-      "page_number": 1
-    },
-    {
-      "document": "Dinner Ideas - Mains_3.pdf",
-      "refined_text": "• \nIn a baking dish, layer half the ziti, half the sauce, dollops of ricotta, and half the \nmozzarella. Repeat layers. • \nTop with grated Parmesan cheese. • \nBake for 25-30 minutes until bubbly and golden. • \nServe warm.",
-      "page_number": 1
-    },
-    {
-      "document": "Dinner Ideas - Sides_4.pdf",
-      "refined_text": "\\n[PAGE 5]\\no Stir in butter and Parmesan cheese. o Serve warm.",
-      "page_number": 1
-    },
-    {
-      "document": "Dinner Ideas - Sides_4.pdf",
-      "refined_text": "o Add beef broth, thyme, salt, and pepper, simmer for 1 hour. o Stir in spinach and okra, cook until tender. o Serve warm.",
-      "page_number": 1
+      "refined_text": "Canh Chua\n•",
+      "page_number": 18
     }
   ]
 }

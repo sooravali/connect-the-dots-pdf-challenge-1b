@@ -1,9 +1,17 @@
 """
 Challenge 1B: Persona-Driven Document Intelligence
-Professional implementation for Adobe Hackathon 2025
+Implementation of the complete multi-stage pipeline as specified in the solution approach.
 
-This module processes multiple PDF collections and extracts relevant content
-based on specific personas and job-to-be-done scenarios.
+PIPELINE STAGES:
+1. Data Ingestion & Preprocessing - PDF text extraction with heading/section detection
+2. Persona-Job Query Construction - Extract keywords and build persona-driven query
+3. Semantic Representation & Ranking - Use all-MiniLM-L6-v2 embeddings + cosine similarity
+4. Section Prioritization - Rank and select top-k sections by relevance score
+5. Subsection Extraction & Refinement - Granular chunking with re-scoring
+6. JSON Output Formatting - Schema-compliant output with metadata
+
+TECH STACK: PyMuPDF for PDF parsing, SentenceTransformers (all-MiniLM-L6-v2) for semantic 
+embeddings, cosine similarity for relevance scoring, CPU-only processing under 1GB model limit.
 """
 
 import os
@@ -31,86 +39,119 @@ logger = logging.getLogger(__name__)
 
 class PersonaDrivenAnalyzer:
     """
-    Main analyzer for persona-driven document intelligence.
-    Processes document collections and extracts relevant sections.
+    Multi-stage pipeline implementation for persona-driven document intelligence.
+    
+    STAGES:
+    1. Data Ingestion & Preprocessing - Extract PDF text and detect sections/headings
+    2. Persona-Job Query Construction - Build semantic query from persona + task
+    3. Semantic Representation & Ranking - Embed sections and rank by cosine similarity  
+    4. Section Prioritization - Select top-k relevant sections across documents
+    5. Subsection Extraction & Refinement - Extract and re-score granular chunks
+    6. JSON Output Formatting - Generate schema-compliant output
     """
     
     def __init__(self):
         self.section_extractor = PDFSectionExtractor()
         self.semantic_analyzer = SemanticAnalyzer()
         self.query_builder = PersonaQueryBuilder()
+        logger.info("PersonaDrivenAnalyzer initialized - multi-stage pipeline ready")
         
     def process_collection(self, input_file: Path, pdf_directory: Path) -> Dict:
         """
-        Process a document collection based on input configuration.
+        Execute complete multi-stage pipeline for persona-driven analysis.
+        
+        Implements the exact approach described in the solution specification:
+        - PDF text extraction with heading detection using PyMuPDF
+        - Persona+job query construction with keyword extraction
+        - Semantic embedding with all-MiniLM-L6-v2 (≤1GB model constraint)
+        - Cosine similarity scoring for relevance ranking
+        - Top-k section selection with importance ranking
+        - Granular subsection extraction with refinement
         
         Args:
             input_file: Path to challenge1b_input.json
             pdf_directory: Directory containing PDF files
             
         Returns:
-            Analysis results in required output format
+            Schema-compliant output matching specification exactly
         """
         start_time = time.time()
         
         try:
-            # Load input configuration
+            logger.info("STAGE 1: Data Ingestion & Preprocessing")
+            
+            # Parse input configuration
             with open(input_file, 'r', encoding='utf-8') as f:
                 input_config = json.load(f)
             
-            logger.info(f"Processing collection: {input_config.get('challenge_info', {}).get('challenge_id', 'unknown')}")
-            
-            # Extract components
-            documents_info = input_config.get("documents", [])
             persona = input_config.get("persona", {}).get("role", "")
             job_to_be_done = input_config.get("job_to_be_done", {}).get("task", "")
             
-            # Validate inputs
-            if not documents_info:
-                raise ValueError("No documents specified in input configuration")
-            if not persona:
-                raise ValueError("No persona specified in input configuration")
-            if not job_to_be_done:
-                raise ValueError("No job-to-be-done specified in input configuration")
+            logger.info(f"Persona: '{persona}', Job: '{job_to_be_done}'")
             
-            # Build semantic query
-            query = self.query_builder.build_query(persona, job_to_be_done)
-            logger.info(f"Built query: {query[:100]}...")
-            
-            # Process each document
+            # Extract text from all PDFs with heading/section detection
+            pdf_files = list(pdf_directory.glob("*.pdf"))
             all_sections = []
             processed_docs = []
             
-            for doc_info in documents_info:
-                filename = doc_info.get("filename", "")
-                pdf_path = pdf_directory / filename
-                
-                if not pdf_path.exists():
-                    logger.warning(f"PDF file not found: {pdf_path}")
+            logger.info(f"Processing {len(pdf_files)} PDFs with PyMuPDF text extraction")
+            
+            for pdf_path in pdf_files:
+                try:
+                    logger.info(f"Extracting from: {pdf_path.name}")
+                    
+                    # Use PyMuPDF for high-quality text extraction with section detection
+                    doc_data = self.section_extractor.extract_document_sections(pdf_path)
+                    
+                    if doc_data and doc_data.get("sections"):
+                        # Structure sections for semantic analysis
+                        for section in doc_data["sections"]:
+                            section_record = {
+                                "source_document": pdf_path.name,
+                                "title": section.get("title", "Document Content"),
+                                "content": section.get("content", ""),
+                                "start_page": section.get("start_page", 1),
+                                "end_page": section.get("end_page", 1)
+                            }
+                            all_sections.append(section_record)
+                        
+                        processed_docs.append(pdf_path.name)
+                        logger.info(f"Extracted {len(doc_data['sections'])} sections from {pdf_path.name}")
+                    else:
+                        logger.warning(f"No sections extracted from {pdf_path.name}")
+                        
+                except Exception as e:
+                    logger.error(f"Failed to process {pdf_path.name}: {e}")
                     continue
-                
-                logger.info(f"Processing document: {filename}")
-                doc_data = self.section_extractor.extract_document_sections(pdf_path)
-                
-                # Add document info to sections
-                for section in doc_data.get("sections", []):
-                    section["source_document"] = filename
-                    all_sections.append(section)
-                
-                processed_docs.append(filename)
             
             if not all_sections:
                 logger.warning("No sections extracted from any documents")
                 return self._create_empty_output(input_config, processed_docs)
             
-            logger.info(f"Extracted {len(all_sections)} sections from {len(processed_docs)} documents")
+            logger.info(f"STAGE 1 COMPLETE: {len(all_sections)} sections extracted from {len(processed_docs)} documents")
             
-            # Rank sections by relevance
+            # STAGE 2: Persona-Job Query Construction
+            logger.info("STAGE 2: Persona-Job Query Construction")
+            
+            # Build persona-driven query with keyword extraction
+            persona_query = self.query_builder.build_query(persona, job_to_be_done)
+            logger.info(f"Constructed persona query: '{persona_query}'")
+            
+            # STAGE 3: Semantic Representation & Ranking
+            logger.info("STAGE 3: Semantic Representation & Ranking")
+            logger.info("Using all-MiniLM-L6-v2 embeddings with cosine similarity scoring")
+            
+            # Rank sections by semantic relevance to persona query
             ranked_sections = self.semantic_analyzer.rank_sections(
-                query, all_sections, top_k=10
+                persona_query, all_sections, top_k=10
             )
             
-            # Generate extracted sections output
+            logger.info(f"Semantic ranking complete. Top section score: {ranked_sections[0][1]:.3f}")
+            
+            # STAGE 4: Section Prioritization
+            logger.info("STAGE 4: Section Prioritization")
+            
+            # Select top-k sections with importance ranking
             extracted_sections = []
             for rank, (section, score) in enumerate(ranked_sections, 1):
                 extracted_sections.append({
@@ -120,45 +161,88 @@ class PersonaDrivenAnalyzer:
                     "page_number": section.get("start_page", 1)
                 })
             
-            # Generate subsection analysis
+            logger.info(f"Selected top {len(extracted_sections)} sections for output")
+            
+            # STAGE 5: Subsection Extraction & Refinement
+            logger.info("STAGE 5: Subsection Extraction & Refinement")
+            
+            # Extract granular chunks from top sections and re-score
             subsection_analysis = []
             for section, score in ranked_sections[:5]:  # Top 5 sections for detailed analysis
+                
+                # Extract relevant subsections with granular chunking
                 subsections = self.semantic_analyzer.extract_relevant_subsections(
-                    section, query, max_subsections=2
+                    section, persona_query, max_subsections=2
                 )
                 
                 for subsection in subsections:
                     subsection_analysis.append({
                         "document": section["source_document"],
-                        "refined_text": subsection["text"][:500],  # Limit text length
+                        "refined_text": subsection["text"][:500],  # Truncate for readability
                         "page_number": subsection["page"]
                     })
             
-            # Create final output
+            logger.info(f"Generated {len(subsection_analysis)} refined subsection snippets")
+            
+            # STAGE 6: JSON Output Formatting
+            logger.info("STAGE 6: JSON Output Formatting")
+            
+            # Assemble schema-compliant output
             result = {
                 "metadata": {
                     "input_documents": processed_docs,
                     "persona": persona,
                     "job_to_be_done": job_to_be_done,
-                    "processing_timestamp": datetime.now().isoformat()
+                    "processing_timestamp": datetime.now().isoformat(),
+                    "total_sections_analyzed": len(all_sections),
+                    "semantic_model": "all-MiniLM-L6-v2",
+                    "processing_time_seconds": round(time.time() - start_time, 2)
                 },
                 "extracted_sections": extracted_sections,
                 "subsection_analysis": subsection_analysis
             }
             
             processing_time = time.time() - start_time
-            logger.info(f"Collection processed in {processing_time:.2f}s - "
-                       f"Found {len(extracted_sections)} relevant sections")
+            logger.info(f"PIPELINE COMPLETE in {processing_time:.2f}s:")
+            logger.info(f"  - Documents processed: {len(processed_docs)}")
+            logger.info(f"  - Sections analyzed: {len(all_sections)}")
+            logger.info(f"  - Top sections selected: {len(extracted_sections)}")
+            logger.info(f"  - Refined subsections: {len(subsection_analysis)}")
             
             return result
             
         except Exception as e:
-            logger.error(f"Error processing collection: {e}")
-            logger.error(f"Traceback: {traceback.format_exc()}")
+            logger.error(f"Pipeline error: {e}")
+            logger.error(traceback.format_exc())
             return self._create_empty_output(
                 input_config if 'input_config' in locals() else {}, 
                 []
             )
+    
+    def process_documents(self, pdfs_directory: str, persona: str, job_to_be_done: str) -> Dict:
+        """
+        Alternative entry point for direct document processing.
+        Creates temporary input config and processes using main pipeline.
+        """
+        # Create temporary input configuration
+        temp_config = {
+            "persona": {"role": persona},
+            "job_to_be_done": {"task": job_to_be_done}
+        }
+        
+        import tempfile
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+            json.dump(temp_config, f)
+            temp_file_path = f.name
+        
+        try:
+            result = self.process_collection(Path(temp_file_path), Path(pdfs_directory))
+            return result
+        finally:
+            try:
+                os.unlink(temp_file_path)
+            except:
+                pass
     
     def _create_empty_output(self, input_config: Dict, processed_docs: List[str]) -> Dict:
         """Create empty output structure for failed processing."""
@@ -216,14 +300,32 @@ def process_persona_driven_analysis():
     """
     start_time = time.time()
     
-    # Get input and output directories
-    input_dir = Path("/app/input")
-    output_dir = Path("/app/output")
+    # Get command line arguments
+    collection_name = sys.argv[1] if len(sys.argv) > 1 else None
+    
+    # Get input and output directories based on current working directory
+    current_dir = Path.cwd()
+    
+    if collection_name:
+        # Process specific collection
+        input_dir = current_dir / collection_name
+        output_dir = current_dir / collection_name
+    else:
+        # Look for Docker-style paths first, then local paths
+        if Path("/app/input").exists():
+            input_dir = Path("/app/input")
+            output_dir = Path("/app/output")
+        else:
+            # Local development - look for collections in current directory
+            input_dir = current_dir
+            output_dir = current_dir
     
     # Validate directories
     if not input_dir.exists():
         logger.error(f"Input directory does not exist: {input_dir}")
         sys.exit(1)
+    
+    logger.info(f"Processing from directory: {input_dir}")
     
     # Create output directory
     output_dir.mkdir(parents=True, exist_ok=True)

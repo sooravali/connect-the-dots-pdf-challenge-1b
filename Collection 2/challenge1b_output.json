@@ -19,120 +19,98 @@
     ],
     "persona": "HR professional",
     "job_to_be_done": "Create and manage fillable forms for onboarding and compliance.",
-    "processing_timestamp": "2025-07-18T16:57:01.452440"
+    "processing_timestamp": "2025-07-22T01:24:49.100816",
+    "total_sections_analyzed": 722,
+    "semantic_model": "all-MiniLM-L6-v2",
+    "processing_time_seconds": 25.94
   },
   "extracted_sections": [
     {
-      "document": "Learn Acrobat - Request e-signatures_1.pdf",
-      "section_title": "Untitled Section",
+      "document": "Learn Acrobat - Fill and Sign.pdf",
+      "section_title": "Note:",
       "importance_rank": 1,
-      "page_number": 1
+      "page_number": 6
     },
     {
       "document": "Learn Acrobat - Fill and Sign.pdf",
-      "section_title": "Untitled Section",
+      "section_title": "Note:",
       "importance_rank": 2,
-      "page_number": 1
+      "page_number": 15
     },
     {
-      "document": "Learn Acrobat - Request e-signatures_2.pdf",
-      "section_title": "Untitled Section",
+      "document": "Learn Acrobat - Generative AI_1.pdf",
+      "section_title": "Provide feedback for generated answers",
       "importance_rank": 3,
-      "page_number": 1
-    },
-    {
-      "document": "Learn Acrobat - Share_2.pdf",
-      "section_title": "Untitled Section",
-      "importance_rank": 4,
-      "page_number": 1
-    },
-    {
-      "document": "Learn Acrobat - Generative AI_2.pdf",
-      "section_title": "Untitled Section",
-      "importance_rank": 5,
-      "page_number": 1
-    },
-    {
-      "document": "Learn Acrobat - Export_2.pdf",
-      "section_title": "Untitled Section",
-      "importance_rank": 6,
-      "page_number": 1
+      "page_number": 26
     },
     {
       "document": "The Ultimate PDF Sharing Checklist.pdf",
-      "section_title": "Untitled Section",
-      "importance_rank": 7,
-      "page_number": 1
+      "section_title": "Conclusion",
+      "importance_rank": 4,
+      "page_number": 7
+    },
+    {
+      "document": "Learn Acrobat - Generative AI_1.pdf",
+      "section_title": "Indicate response",
+      "importance_rank": 5,
+      "page_number": 27
     },
     {
       "document": "Learn Acrobat - Share_1.pdf",
-      "section_title": "Untitled Section",
+      "section_title": "Delete The Markup",
+      "importance_rank": 6,
+      "page_number": 7
+    },
+    {
+      "document": "Learn Acrobat - Fill and Sign.pdf",
+      "section_title": "select Yes to confirm:",
+      "importance_rank": 7,
+      "page_number": 10
+    },
+    {
+      "document": "Learn Acrobat - Fill and Sign.pdf",
+      "section_title": "Remove your signature or initials",
       "importance_rank": 8,
-      "page_number": 1
+      "page_number": 19
     },
     {
-      "document": "Learn Acrobat - Edit_1.pdf",
-      "section_title": "Untitled Section",
+      "document": "Learn Acrobat - Request e-signatures_1.pdf",
+      "section_title": "template:",
       "importance_rank": 9,
-      "page_number": 1
+      "page_number": 13
     },
     {
-      "document": "Test Your Acrobat Exporting Skills.pdf",
-      "section_title": "Untitled Section",
+      "document": "Learn Acrobat - Generative AI_1.pdf",
+      "section_title": "Acrobat",
       "importance_rank": 10,
-      "page_number": 1
+      "page_number": 16
     }
   ],
   "subsection_analysis": [
     {
-      "document": "Learn Acrobat - Request e-signatures_1.pdf",
-      "refined_text": "When the signer adds his or her signature in the signature field and then clicks \nthe Click to sign button, the agreement is sent to the next signer with a link to sign, and so \non. Once the agreement is signed by all the signers, everyone gets a copy of the signed \nagreement.",
-      "page_number": 1
-    },
-    {
-      "document": "Learn Acrobat - Request e-signatures_1.pdf",
-      "refined_text": "It displays the fields progressively as you \nenter the details. The left pane provides information on getting signatures from others \nworkflow. In the recipients field, add recipient email addresses in the order you want \nthe document to be signed. Request signatures – Add recipients \n3.",
-      "page_number": 1
+      "document": "Learn Acrobat - Fill and Sign.pdf",
+      "refined_text": "Note:",
+      "page_number": 6
     },
     {
       "document": "Learn Acrobat - Fill and Sign.pdf",
-      "refined_text": "To adjust the size of your signature, hover over the blue circle at the corner and \nthen hold and drag it as desired. Note:  \nIf you want to use an image as your signature or initials: \n• \nSign your name in black ink on a clean, blank sheet of whit.",
-      "page_number": 1
+      "refined_text": "Note:",
+      "page_number": 15
     },
     {
-      "document": "Learn Acrobat - Fill and Sign.pdf",
-      "refined_text": "It automatically displays the default checkmark or the selected radio field symbol. 2. Select the radio option field to enter the symbol. 3. To change the symbol, select the field again, and then from the menu, ellipsis ( ) and \nthen select another symbol. It marks the field with the selected symbol.",
-      "page_number": 1
+      "document": "Learn Acrobat - Generative AI_1.pdf",
+      "refined_text": "Provide feedback for generated answers",
+      "page_number": 26
     },
     {
-      "document": "Learn Acrobat - Request e-signatures_2.pdf",
-      "refined_text": "Digital signatures are a secure and efficient way to electronically sign and authenticate \ndocuments, ensuring their authenticity and integrity. By using digital signatures, you can sign \ndocuments quickly and easily, and be confident that they can’t be tampered with or forged.",
-      "page_number": 1
+      "document": "The Ultimate PDF Sharing Checklist.pdf",
+      "refined_text": "Conclusion",
+      "page_number": 7
     },
     {
-      "document": "Learn Acrobat - Request e-signatures_2.pdf",
-      "refined_text": "From the Verification box in the Digital Signatures panel, select More. \\n[PAGE 3]\\n4.",
-      "page_number": 1
-    },
-    {
-      "document": "Learn Acrobat - Share_2.pdf",
-      "refined_text": "• \nActions on image selection: When you select an image you can perform actions like \nAdd sticky note, Highlight image, Redact image, Copy Image, and Edit a PDF.",
-      "page_number": 1
-    },
-    {
-      "document": "Learn Acrobat - Share_2.pdf",
-      "refined_text": "\\n[PAGE 8]\\nAdd reactions to comments on shared files \nYou can now enhance your reviews on shared PDFs in Acrobat by adding reaction emojis to \ncomments, making the reviews more interactive. To add reactions: \n1. Open a shared PDF and select the Comments panel. 2. Select.",
-      "page_number": 1
-    },
-    {
-      "document": "Learn Acrobat - Generative AI_2.pdf",
-      "refined_text": "Select Clear chat history. A confirmation dialog box will appear, asking you to confirm \nyour selection. Select Clear history. If you don't want to clear your chat history, \nselect Cancel. Clear chat history from the AI assistant\\n[PAGE 3]\\nYour chat history is cleared.",
-      "page_number": 1
-    },
-    {
-      "document": "Learn Acrobat - Generative AI_2.pdf",
-      "refined_text": "Chat history\\n[PAGE 2]\\nClear chat history \nYou can clear the chat history and ensure that the AI Assistant treats the document as new so \nyou can ask fresh questions. To clear chat history: \n1. Open the document for which you wish to clear the chat history. Select   in the upper \nright. 2.",
-      "page_number": 1
+      "document": "Learn Acrobat - Generative AI_1.pdf",
+      "refined_text": "Indicate response\nYou can choose to like, dislike, or report the generated response. When you select any option, \na window shows a set of relevant questions. Follow the onscreen instructions to submit your \nfeedback.",
+      "page_number": 27
     }
   ]
 }
