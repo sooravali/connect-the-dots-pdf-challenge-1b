@@ -100,12 +100,22 @@ class PDFSectionExtractor:
         """Identify document sections using heading patterns and page breaks."""
         sections = []
         
-        # Split text into potential sections using various patterns
+        # Enhanced section detection patterns
         section_patterns = [
-            r'\\n\\s*(?:Chapter|Section|Part)\\s+\\d+[^\\n]*\\n',
-            r'\\n\\s*\\d+\\.\\s+[A-Z][^\\n]{10,100}\\n',
-            r'\\n\\s*[A-Z][A-Z\\s]{10,}\\n',  # ALL CAPS headings
-            r'\\n\\[PAGE\\s+\\d+\\]\\n',  # Page breaks
+            # Standard section identifiers
+            r'\\n\\s*(?:Chapter|Section|Part|Appendix)\\s+\\d+[^\\n]*\\n',
+            # Numbered headings (1.2, 3.4.5, etc.)
+            r'\\n\\s*\\d+(?:\\.\\d+)*\\s+[A-Z][^\\n]*\\n',
+            # ALL CAPS headings (common for titles)
+            r'\\n\\s*[A-Z][A-Z\\s]{5,}\\n', 
+            # Common section headers
+            r'\\n\\s*(?:INTRODUCTION|ABSTRACT|CONCLUSION|METHODOLOGY|RESULTS|DISCUSSION|REFERENCES|BIBLIOGRAPHY|APPENDIX)[^\\n]*\\n',
+            # Headers with common prefixes
+            r'\\n\\s*(?:Overview|Introduction|Background|Executive Summary|Key Findings|Analysis|Recommendations)[^\\n]*\\n',
+            # Headers with formatting indicators (bullets, etc.)
+            r'\\n\\s*[•\\*\\-–—]\\s+[A-Z][^\\n]*\\n',
+            # Page breaks - important for fallback segmentation
+            r'\\n\\[PAGE\\s+\\d+\\]\\n',
         ]
         
         # Find all potential section boundaries
@@ -118,6 +128,27 @@ class PDFSectionExtractor:
         
         boundaries.append(len(full_text))  # End of document
         boundaries = sorted(set(boundaries))
+        
+        # Smart section merging - avoid creating too small sections
+        merged_boundaries = [boundaries[0]]
+        for i in range(1, len(boundaries) - 1):
+            current_boundary = boundaries[i]
+            next_boundary = boundaries[i + 1]
+            
+            # If section would be too small, skip this boundary
+            if next_boundary - current_boundary < self.min_section_length:
+                continue
+            
+            # Don't merge if this looks like a real section header
+            section_start = full_text[current_boundary:current_boundary + 200]
+            potential_header = section_start.split('\n')[0] if '\n' in section_start else section_start[:100]
+            
+            # Check if this looks like a real header (not just a page break)
+            if not potential_header.startswith('[PAGE') and len(potential_header.strip()) > 5:
+                merged_boundaries.append(current_boundary)
+        
+        merged_boundaries.append(boundaries[-1])  # Always include the end
+        boundaries = merged_boundaries
         
         # Create sections from boundaries
         for i in range(len(boundaries) - 1):
@@ -151,22 +182,96 @@ class PDFSectionExtractor:
         # If no clear sections found, create page-based sections
         if not sections:
             sections = self._create_page_based_sections(page_texts)
+            
+        # Post-process: ensure sections have unique, meaningful titles
+        processed_sections = []
+        seen_titles = set()
         
-        return sections
+        for i, section in enumerate(sections):
+            title = section["title"]
+            
+            # If we have a duplicate or generic "Untitled Section"
+            if title in seen_titles or title == "Untitled Section":
+                # Try to extract a better title from the first paragraph
+                content = section["content"]
+                first_para = content.split("\n\n")[0] if "\n\n" in content else content[:300]
+                
+                # Create a more descriptive title from content
+                if len(first_para) > 10:
+                    content_title = first_para[:50].strip()
+                    if content_title.endswith('.'):
+                        content_title = content_title[:-1]
+                    
+                    # Make sure this derived title is unique
+                    if content_title not in seen_titles:
+                        section["title"] = content_title
+                    else:
+                        # Add a numeric suffix if still duplicate
+                        section["title"] = f"{title} ({i+1})"
+                else:
+                    section["title"] = f"Content Section {i+1}"
+            
+            seen_titles.add(section["title"])
+            processed_sections.append(section)
+        
+        return processed_sections
     
     def _extract_section_title(self, lines: List[str]) -> str:
         """Extract a meaningful title from section lines."""
-        for line in lines[:10]:  # Check first 10 lines
+        # First, look for strong title indicators in the first several lines
+        for line in lines[:15]:  # Examine more lines (15 instead of 10)
             line = line.strip()
             if not line or line.startswith('[PAGE'):
                 continue
             
-            # Clean and validate as title
-            if 10 <= len(line) <= 100 and not line.endswith('.'):
+            # Check for common title patterns with high confidence
+            # ALL CAPS lines are often titles
+            if line.isupper() and 4 <= len(line) <= 150:
+                return line.strip()
+                
+            # Lines with specific prefixes are likely titles
+            if any(line.lower().startswith(prefix) for prefix in 
+                  ['chapter ', 'section ', 'part ', 'introduction', 'overview', 
+                   'appendix', 'executive summary', 'abstract']):
                 # Remove leading numbers/markers
                 title = re.sub(r'^\\d+\\.?\\s*', '', line)
-                title = re.sub(r'^(Chapter|Section|Part)\\s+\\d+[:\\.]?\\s*', '', title, flags=re.IGNORECASE)
+                title = re.sub(r'^(Chapter|Section|Part|Appendix)\\s+\\d+[:\\.]?\\s*', '', title, flags=re.IGNORECASE)
                 return title.strip()
+        
+        # More flexible title extraction for regular cases
+        for line in lines[:15]:
+            line = line.strip()
+            if not line or line.startswith('[PAGE'):
+                continue
+            
+            # More flexible length requirements
+            if 4 <= len(line) <= 150:  # Allow shorter and longer titles
+                # Skip lines that look like paragraphs (multiple sentences ending with periods)
+                if len(line.split('. ')) > 2 and line.endswith('.'):
+                    continue
+                    
+                # Skip likely dates, single words, and footer/header information
+                if re.match(r'^\d{1,2}/\d{1,2}/\d{2,4}$', line) or len(line.split()) <= 1:
+                    continue
+                    
+                # Remove leading numbers, bullets, etc.
+                title = re.sub(r'^[0-9]+\\.?\\s*', '', line)
+                title = re.sub(r'^[•\\*\\-–—]\\s*', '', title)
+                title = re.sub(r'^(Chapter|Section|Part)\\s+\\d+[:\\.]?\\s*', '', title, flags=re.IGNORECASE)
+                
+                # Truncate the title if it's too long
+                if len(title) > 100:
+                    title = title[:97] + '...'
+                
+                return title.strip()
+        
+        # Look for the first non-empty line as a last resort
+        for line in lines:
+            if line.strip() and not line.startswith('[PAGE'):
+                title = line.strip()
+                if len(title) > 100:
+                    title = title[:97] + '...'
+                return title
         
         return "Untitled Section"
     
@@ -176,23 +281,105 @@ class PDFSectionExtractor:
         
         if page_markers:
             pages = [int(p) for p in page_markers]
-            return min(pages), max(pages)
+            if pages:
+                return min(pages), max(pages)
         
-        return 1, 1  # Default
+        # Fallback: try to match section content against page text
+        # This helps when page markers aren't properly captured
+        start_page = 1
+        end_page = 1
+        
+        # Get a sample of text from the beginning and end of the section (excluding page markers)
+        clean_text = re.sub(r'\\[PAGE\\s+\\d+\\]', '', section_text)
+        
+        if len(clean_text) > 50:  # Only try matching if we have enough content
+            # Get samples from beginning and end of section
+            start_sample = clean_text[:100].strip()
+            end_sample = clean_text[-100:].strip()
+            
+            # Find pages containing these samples
+            start_page_candidates = []
+            end_page_candidates = []
+            
+            for page_num, page_text in page_texts.items():
+                if start_sample and start_sample in page_text:
+                    start_page_candidates.append(page_num)
+                if end_sample and end_sample in page_text:
+                    end_page_candidates.append(page_num)
+            
+            # Use the best matches if found
+            if start_page_candidates:
+                start_page = min(start_page_candidates)
+            if end_page_candidates:
+                end_page = max(end_page_candidates)
+                
+            # Ensure end_page is not less than start_page
+            if end_page < start_page:
+                end_page = start_page
+        
+        return start_page, end_page
     
     def _clean_section_content(self, content: str) -> str:
-        """Clean section content for analysis."""
+        """Clean section content for analysis while preserving meaningful structure."""
+        if not content:
+            return ""
+            
         # Remove page markers
         content = re.sub(r'\\[PAGE\\s+\\d+\\]', '', content)
         
-        # Normalize whitespace
-        content = re.sub(r'\\s+', ' ', content)
-        
-        # Remove very short lines (likely artifacts)
+        # Split into lines for better processing
         lines = content.split('\\n')
-        cleaned_lines = [line.strip() for line in lines if len(line.strip()) > 3]
+        cleaned_lines = []
         
-        return '\\n'.join(cleaned_lines).strip()
+        # Process line by line
+        for line in lines:
+            line = line.strip()
+            
+            # Skip empty lines or very short lines that are likely artifacts
+            if not line or len(line) <= 2:
+                continue
+                
+            # Skip lines that are just page numbers or irrelevant markers
+            if re.match(r'^-?\d+$', line) or line in ['-', '•', '*', '|']:
+                continue
+                
+            # Handle common formatting issues
+            # Fix line breaks in the middle of sentences
+            if cleaned_lines and cleaned_lines[-1] and not cleaned_lines[-1].endswith('.') and \
+               not cleaned_lines[-1].endswith('?') and not cleaned_lines[-1].endswith('!') and \
+               not cleaned_lines[-1].endswith(':') and not cleaned_lines[-1].endswith(';'):
+                if not line[0].isupper() or line[0].isdigit():
+                    # Likely a continuation of the previous line
+                    cleaned_lines[-1] = cleaned_lines[-1] + ' ' + line
+                    continue
+            
+            # Add the cleaned line
+            cleaned_lines.append(line)
+        
+        # Join lines with proper paragraph handling
+        # Group consecutive lines into paragraphs
+        paragraphs = []
+        current_para = []
+        
+        for line in cleaned_lines:
+            if not line.strip():  # Empty line indicates paragraph break
+                if current_para:
+                    paragraphs.append(' '.join(current_para))
+                    current_para = []
+            else:
+                current_para.append(line)
+                
+        # Add the last paragraph if it exists
+        if current_para:
+            paragraphs.append(' '.join(current_para))
+        
+        # Join paragraphs with double newline for readability
+        result = '\\n\\n'.join(paragraphs)
+        
+        # Final cleanup - normalize whitespace within paragraphs
+        result = re.sub(r' {2,}', ' ', result)
+        
+        return result.strip()
     
     def _classify_section_type(self, title: str, content: str) -> str:
         """Classify the type of section based on title and content."""
@@ -277,10 +464,40 @@ def clean_text(text: str) -> str:
     if not text:
         return ""
     
-    # Remove excessive whitespace
-    text = re.sub(r'\\s+', ' ', text)
+    # Convert literal escape sequences to actual characters
+    text = text.replace('\\n', '\n').replace('\\t', '\t').replace('\\r', '\r')
     
-    # Remove non-printable characters except newlines and tabs
-    text = re.sub(r'[^\\x20-\\x7E\\n\\t]', '', text)
+    # Replace common encoding artifacts from PDF extraction
+    replacements = {
+        '•': '- ',  # Replace bullets with dashes
+        '–': '-',   # Standardize dashes
+        '—': '-',   # Standardize dashes
+        ''': "'",   # Standardize quotes
+        ''': "'",   # Standardize quotes
+        '"': '"',   # Standardize quotes
+        '"': '"',   # Standardize quotes
+        '…': '...',  # Standardize ellipses
+    }
+    
+    for old, new in replacements.items():
+        text = text.replace(old, new)
+    
+    # Remove excessive whitespace while preserving newlines
+    text = re.sub(r' +', ' ', text)
+    text = re.sub(r'\n+', '\n', text)
+    
+    # Remove control characters except newlines and tabs
+    text = re.sub(r'[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]', '', text)
+    
+    # Use UTF-8 encoding with fallback to preserve as much text as possible
+    try:
+        # Try to normalize text to closest ASCII representation
+        import unicodedata
+        text = unicodedata.normalize('NFKD', text)
+        # Only remove characters that can't be represented in UTF-8
+        text = text.encode('utf-8', 'ignore').decode('utf-8')
+    except Exception:
+        # Fallback to ASCII if Unicode processing fails
+        text = text.encode('ascii', 'ignore').decode('ascii')
     
     return text.strip()
