@@ -11,98 +11,78 @@
     ],
     "persona": "Travel Planner",
     "job_to_be_done": "Plan a trip of 4 days for a group of 10 college friends.",
-    "processing_timestamp": "2025-07-22T01:23:10.445661",
-    "total_sections_analyzed": 187,
+    "processing_timestamp": "2025-07-27T01:00:06.763552",
+    "total_sections_analyzed": 107,
     "semantic_model": "all-MiniLM-L6-v2",
-    "processing_time_seconds": 6.1
+    "processing_time_seconds": 2.86
   },
   "extracted_sections": [
     {
-      "document": "South of France - Tips and Tricks.pdf",
-      "section_title": "Packing for All Seasons",
+      "document": "South of France - Things to Do.pdf",
+      "section_title": "Nightlife and Entertainment",
       "importance_rank": 1,
+      "page_number": 11
+    },
+    {
+      "document": "South of France - Tips and Tricks.pdf",
+      "section_title": "General Packing Tips and Tricks",
+      "importance_rank": 2,
       "page_number": 2
     },
     {
-      "document": "South of France - Traditions and Culture.pdf",
-      "section_title": "Festivals and Celebrations",
-      "importance_rank": 2,
-      "page_number": 1
-    },
-    {
       "document": "South of France - Things to Do.pdf",
-      "section_title": "Festivals and Events",
+      "section_title": "Coastal Adventures",
       "importance_rank": 3,
-      "page_number": 9
-    },
-    {
-      "document": "South of France - Tips and Tricks.pdf",
-      "section_title": "Packing for Kids",
-      "importance_rank": 4,
-      "page_number": 8
-    },
-    {
-      "document": "South of France - Tips and Tricks.pdf",
-      "section_title": "Packing for Adults",
-      "importance_rank": 5,
-      "page_number": 5
-    },
-    {
-      "document": "South of France - Restaurants and Hotels.pdf",
-      "section_title": "Restaurants",
-      "importance_rank": 6,
-      "page_number": 1
+      "page_number": 2
     },
     {
       "document": "South of France - Cuisine.pdf",
-      "section_title": "Must-Visit Restaurants",
-      "importance_rank": 7,
-      "page_number": 1
+      "section_title": "Culinary Experiences",
+      "importance_rank": 4,
+      "page_number": 6
     },
     {
-      "document": "South of France - Things to Do.pdf",
-      "section_title": "Culinary Delights",
-      "importance_rank": 8,
-      "page_number": 7
-    },
-    {
-      "document": "South of France - Restaurants and Hotels.pdf",
-      "section_title": "Hotels",
-      "importance_rank": 9,
-      "page_number": 8
-    },
-    {
-      "document": "South of France - Things to Do.pdf",
-      "section_title": "Nightlife and Entertainment",
-      "importance_rank": 10,
-      "page_number": 18
+      "document": "South of France - Cities.pdf",
+      "section_title": "Overview of the Region",
+      "importance_rank": 5,
+      "page_number": 2
     }
   ],
   "subsection_analysis": [
     {
+      "document": "South of France - Things to Do.pdf",
+      "refined_text": "The South of France oﬀers a vibrant nightlife scene, with options ranging from chic bars tlively nightclubs:",
+      "page_number": 11
+    },
+    {
       "document": "South of France - Tips and Tricks.pdf",
-      "refined_text": "Packing for All Seasons",
+      "refined_text": "Layering: The weather can vary, spack layers tstay comfortable in diﬀerent temperatures. Versatile Clothing: Choose items that can be mixed and matched tcreate multiple outfits, helping you pack lighter. Packing Cubes: Use packing cubes torganize your clothes and maximize suitcase space. Roll Your Clothes: Rolling clothes saves space and reduces wrinkles. Travel. Sized Toiletries: Bring travel. sized toiletries tsave space and comply with airline regulations. Reusable Bags: Pack a few reusable b",
       "page_number": 2
     },
     {
-      "document": "South of France - Traditions and Culture.pdf",
-      "refined_text": "Festivals and Celebrations",
-      "page_number": 1
+      "document": "South of France - Tips and Tricks.pdf",
+      "refined_text": "First Aid Kit: Include a small first aid kit with band. aids, antiseptic wipes, and any necessary medications. Copies of Important Documents: Make copies of your passport, travel insurance, and other important documents. Keep them separate from the originals. Portable Laundry Kit: A small laundry kit with detergent and a travel clothesline can be handy for longer trips. Multi. Purpose Shoes: Choose shoes that are comfortable for walking but can alsbe worn ta nice dinner.",
+      "page_number": 2
     },
     {
       "document": "South of France - Things to Do.pdf",
-      "refined_text": "Festivals and Events",
-      "page_number": 9
+      "refined_text": "The South of France is renowned for its beautiful coastline along the Mediterranean Sea. Here are some activities tenjoy by the sea:",
+      "page_number": 2
     },
     {
-      "document": "South of France - Tips and Tricks.pdf",
-      "refined_text": "Packing for Kids",
-      "page_number": 8
+      "document": "South of France - Cuisine.pdf",
+      "refined_text": "Food Markets: Visit local markets such as the Cours Saleya Market in Nice or the Marché Forville in Cannes tsample fresh produce, cheeses, and charcuterie. These markets are a feast for the senses, with stalls overflowing with colorful fruits and vegetables, fragrant herbs, and artisanal products. Take the time tchat with the vendors and learn about the local specialties. Wine Tours: The South of France is renowned for its wine regions, including Provence and Languedoc. Take a wine tour tvisit v",
+      "page_number": 6
     },
     {
-      "document": "South of France - Tips and Tricks.pdf",
-      "refined_text": "Packing for Adults",
-      "page_number": 5
+      "document": "South of France - Cuisine.pdf",
+      "refined_text": "Many wineries oﬀer guided tours and tastings, giving you the opportunity tsample a variety of wines and discover new favorites. Don't miss the chance ttry rosé from Provence, which is famous for its light, refreshing flavor. Olive Oil Tasting: The region is famous for its olive oil. Visit an olive grove tlearn about olive oil production and enjoy a tasting session. You'll have the chance tsample diﬀerent varieties of olive oil and learn about the nuances of flavor and aroma. Many olive groves al",
+      "page_number": 6
+    },
+    {
+      "document": "South of France - Cities.pdf",
+      "refined_text": "The South of France, or \"Le Midi,\" encompasses the regions of Provence. Alpes. Côte d'Azur, Occitanie, and parts of Nouvelle. Aquitaine. This area is renowned for its diverse landscapes, from the sun. drenched beaches of the French Riviera tthe rolling vineyards of Provence and the rugged Pyrenees mountains. The Mediterranean climate ensures warm summers and mild winters, making it a year. round destination. The South of France is alsfamous for its cuisine, wines, and vibrant cultural scene.",
+      "page_number": 2
     }
   ]
 }

@@ -13,98 +13,68 @@
     ],
     "persona": "Food Contractor",
     "job_to_be_done": "Prepare a vegetarian buffet-style dinner menu for a corporate gathering, including gluten-free items.",
-    "processing_timestamp": "2025-07-22T01:25:58.649544",
-    "total_sections_analyzed": 764,
+    "processing_timestamp": "2025-07-27T01:02:19.940635",
+    "total_sections_analyzed": 325,
     "semantic_model": "all-MiniLM-L6-v2",
-    "processing_time_seconds": 20.19
+    "processing_time_seconds": 6.03
   },
   "extracted_sections": [
     {
-      "document": "Dinner Ideas - Sides_1.pdf",
-      "section_title": "Aloo Gobi \n•",
+      "document": "Dinner Ideas - Mains_1.pdf",
+      "section_title": " Shredded lettuce, diced tomatoes, shredded cheese, sour cream, and salsa for toppings Instructions:",
       "importance_rank": 1,
-      "page_number": 1
-    },
-    {
-      "document": "Dinner Ideas - Sides_3.pdf",
-      "section_title": "Naan \n•",
-      "importance_rank": 2,
-      "page_number": 21
-    },
-    {
-      "document": "Dinner Ideas - Sides_3.pdf",
-      "section_title": "Horta \n•",
-      "importance_rank": 3,
-      "page_number": 1
-    },
-    {
-      "document": "Dinner Ideas - Sides_2.pdf",
-      "section_title": "Festival \n•",
-      "importance_rank": 4,
-      "page_number": 15
-    },
-    {
-      "document": "Dinner Ideas - Sides_1.pdf",
-      "section_title": "Canh Chua",
-      "importance_rank": 5,
-      "page_number": 18
-    },
-    {
-      "document": "Dinner Ideas - Sides_3.pdf",
-      "section_title": "Oi Muchim",
-      "importance_rank": 6,
-      "page_number": 24
+      "page_number": 5
     },
     {
       "document": "Dinner Ideas - Mains_2.pdf",
-      "section_title": "Coq au Vin",
-      "importance_rank": 7,
-      "page_number": 10
+      "section_title": " 2 tablespoons vegetable oil  Tortillas for serving  Shredded lettuce, diced tomatoes, shredded cheese, sour cream, and salsa for toppings Instructions:",
+      "importance_rank": 2,
+      "page_number": 8
     },
     {
-      "document": "Dinner Ideas - Sides_2.pdf",
-      "section_title": "Edamame \n•",
-      "importance_rank": 8,
+      "document": "Dinner Ideas - Mains_1.pdf",
+      "section_title": " Sliced green onions for garnish Instructions:",
+      "importance_rank": 3,
+      "page_number": 4
+    },
+    {
+      "document": "Dinner Ideas - Mains_2.pdf",
+      "section_title": " 1 pound chicken thighs, cut into bite-sized pieces  1/4 cup soy sauce  1/4 cup mirin  1/4 cup sake  2 tablespoons sugar  Bamboo skewers  Sliced green onions for garnish Instructions:",
+      "importance_rank": 4,
+      "page_number": 6
+    },
+    {
+      "document": "Dinner Ideas - Mains_3.pdf",
+      "section_title": " Chopped parsley for garnish  Cooked couscous for serving Instructions:",
+      "importance_rank": 5,
       "page_number": 7
-    },
-    {
-      "document": "Dinner Ideas - Sides_1.pdf",
-      "section_title": "Banh Xeo \n•",
-      "importance_rank": 9,
-      "page_number": 7
-    },
-    {
-      "document": "Dinner Ideas - Sides_2.pdf",
-      "section_title": "Falafel \n•",
-      "importance_rank": 10,
-      "page_number": 11
     }
   ],
   "subsection_analysis": [
     {
-      "document": "Dinner Ideas - Sides_1.pdf",
-      "refined_text": "Aloo Gobi \n•",
-      "page_number": 1
+      "document": "Dinner Ideas - Mains_1.pdf",
+      "refined_text": " In a skillet, cook ground beef over medium heat until browned.  Add diced onion and minced garlic, sauté until softened.  Stir in tacseasoning and water, simmer until thickened.  Serve beef mixture in tacshells or tortillas with desired toppings.",
+      "page_number": 5
     },
     {
-      "document": "Dinner Ideas - Sides_3.pdf",
-      "refined_text": "Naan \n•",
-      "page_number": 21
+      "document": "Dinner Ideas - Mains_2.pdf",
+      "refined_text": " In a large skillet, heat vegetable oil over medium heat.  Cook sliced chicken, bell pepper, and onion until chicken is cooked through and vegetables are tender.  Stir in fajita seasoning and cook for an additional 2 minutes.  Serve chicken and vegetables in tortillas with desired toppings.",
+      "page_number": 8
     },
     {
-      "document": "Dinner Ideas - Sides_3.pdf",
-      "refined_text": "Horta \n•",
-      "page_number": 1
+      "document": "Dinner Ideas - Mains_1.pdf",
+      "refined_text": " In a bowl, mix soy sauce, mirin, sugar, sake, grated ginger, and minced garlic.  Marinate chicken thighs in the mixture for at least 30 minutes.  Heat vegetable oil in a skillet over medium heat.  Cook chicken thighs until browned and cooked through.  Pour marinade intthe skillet and simmer until thickened.  Serve chicken over cooked rice, garnished with sliced green onions.",
+      "page_number": 4
     },
     {
-      "document": "Dinner Ideas - Sides_2.pdf",
-      "refined_text": "Festival \n•",
-      "page_number": 15
+      "document": "Dinner Ideas - Mains_2.pdf",
+      "refined_text": " In a bowl, mix soy sauce, mirin, sake, and sugar.  Marinate chicken pieces in the mixture for at least 30 minutes.  Thread chicken ontbamboskewers.  Preheat grill tmedium. high heat.  Grill chicken, brushing with marinade, until cooked through.  Garnish with sliced green onions and serve.",
+      "page_number": 6
     },
     {
-      "document": "Dinner Ideas - Sides_1.pdf",
-      "refined_text": "Canh Chua\n•",
-      "page_number": 18
+      "document": "Dinner Ideas - Mains_3.pdf",
+      "refined_text": " In a large pot, heat olive oil over medium heat.  Brown chicken thighs on all sides, then set aside.  Sauté onion and garlic until softened.  Stir in cumin, cinnamon, and turmeric, then add chicken broth, apricots, and olives.  Return chicken tthe pot, cover, and simmer for 45 minutes until tender.  Season with salt and pepper.  Garnish with parsley and serve over couscous.",
+      "page_number": 7
     }
   ]
 }

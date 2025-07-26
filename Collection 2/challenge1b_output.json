@@ -19,98 +19,68 @@
     ],
     "persona": "HR professional",
     "job_to_be_done": "Create and manage fillable forms for onboarding and compliance.",
-    "processing_timestamp": "2025-07-22T01:24:49.100816",
-    "total_sections_analyzed": 722,
+    "processing_timestamp": "2025-07-27T01:01:16.153995",
+    "total_sections_analyzed": 604,
     "semantic_model": "all-MiniLM-L6-v2",
-    "processing_time_seconds": 25.94
+    "processing_time_seconds": 8.88
   },
   "extracted_sections": [
     {
-      "document": "Learn Acrobat - Fill and Sign.pdf",
-      "section_title": "Note:",
+      "document": "Learn Acrobat - Share_2.pdf",
+      "section_title": "Annotations and drawing markup tools overview",
       "importance_rank": 1,
-      "page_number": 6
-    },
-    {
-      "document": "Learn Acrobat - Fill and Sign.pdf",
-      "section_title": "Note:",
-      "importance_rank": 2,
-      "page_number": 15
+      "page_number": 2
     },
     {
       "document": "Learn Acrobat - Generative AI_1.pdf",
-      "section_title": "Provide feedback for generated answers",
+      "section_title": "Get AI-generated overviews and summaries",
+      "importance_rank": 2,
+      "page_number": 12
+    },
+    {
+      "document": "Learn Acrobat - Export_1.pdf",
+      "section_title": "Overview",
       "importance_rank": 3,
       "page_number": 26
     },
     {
-      "document": "The Ultimate PDF Sharing Checklist.pdf",
-      "section_title": "Conclusion",
+      "document": "Learn Acrobat - Fill and Sign.pdf",
+      "section_title": "Types of PDF forms",
       "importance_rank": 4,
-      "page_number": 7
+      "page_number": 2
     },
     {
-      "document": "Learn Acrobat - Generative AI_1.pdf",
-      "section_title": "Indicate response",
+      "document": "Learn Acrobat - Fill and Sign.pdf",
+      "section_title": "Fill in interactive forms",
       "importance_rank": 5,
-      "page_number": 27
-    },
-    {
-      "document": "Learn Acrobat - Share_1.pdf",
-      "section_title": "Delete The Markup",
-      "importance_rank": 6,
-      "page_number": 7
-    },
-    {
-      "document": "Learn Acrobat - Fill and Sign.pdf",
-      "section_title": "select Yes to confirm:",
-      "importance_rank": 7,
-      "page_number": 10
-    },
-    {
-      "document": "Learn Acrobat - Fill and Sign.pdf",
-      "section_title": "Remove your signature or initials",
-      "importance_rank": 8,
-      "page_number": 19
-    },
-    {
-      "document": "Learn Acrobat - Request e-signatures_1.pdf",
-      "section_title": "template:",
-      "importance_rank": 9,
-      "page_number": 13
-    },
-    {
-      "document": "Learn Acrobat - Generative AI_1.pdf",
-      "section_title": "Acrobat",
-      "importance_rank": 10,
-      "page_number": 16
+      "page_number": 8
     }
   ],
   "subsection_analysis": [
     {
-      "document": "Learn Acrobat - Fill and Sign.pdf",
-      "refined_text": "Note:",
-      "page_number": 6
-    },
-    {
-      "document": "Learn Acrobat - Fill and Sign.pdf",
-      "refined_text": "Note:",
-      "page_number": 15
+      "document": "Learn Acrobat - Share_2.pdf",
+      "refined_text": "Note: In Acrobat Reader, complete commenting tools are available only in PDFs with commenting enabled. You can use annotation and drawing markup tools tadd comments. Comments are notes and drawings that communicate ideas or provide feedback for PDFs. You can type a text message using the Add text comment tool. Alternatively, you can use a drawing tool tadd a line, circle, or other shape and then type a message in the associated pop. up note. Text. editing tools let you add editing marks tindicat",
+      "page_number": 2
     },
     {
       "document": "Learn Acrobat - Generative AI_1.pdf",
-      "refined_text": "Provide feedback for generated answers",
+      "refined_text": "The Generative summary feature summarizes the document's organization and content. It alsprovides a brief overview at the beginning texplain what the entire document is about. Whether you're a researcher, business analyst, or student, the generative AI features help you scan your PDF documents and quickly extract the essence, key points, and insights. 1. Open a PDF file and select the Generative summary icon in the navigation panel.",
+      "page_number": 12
+    },
+    {
+      "document": "Learn Acrobat - Export_1.pdf",
+      "refined_text": "Acrobat allows you texport images and text selections from a PDF tdifferent file formats. Each format uses unique conversion settings when you export text or image selections.",
       "page_number": 26
     },
     {
-      "document": "The Ultimate PDF Sharing Checklist.pdf",
-      "refined_text": "Conclusion",
-      "page_number": 7
+      "document": "Learn Acrobat - Fill and Sign.pdf",
+      "refined_text": "Interactive forms : These contain fields that you can select and fill in. Flat forms : These dnot have interactive fields. It could be a paper form or PDF that hasn’t been optimized for form filling. The Fill & Sign tool automatically detects the form fields like text fields, comb fields, checkboxes, and radibuttons. You can manually add text and other symbols anywhere on the form using the Fill & Sign tool if required. You can complete the forms by entering information and adding your signature",
+      "page_number": 2
     },
     {
-      "document": "Learn Acrobat - Generative AI_1.pdf",
-      "refined_text": "Indicate response\nYou can choose to like, dislike, or report the generated response. When you select any option, \na window shows a set of relevant questions. Follow the onscreen instructions to submit your \nfeedback.",
-      "page_number": 27
+      "document": "Learn Acrobat - Fill and Sign.pdf",
+      "refined_text": "An interactive form contains fields that you can select or fill in.",
+      "page_number": 8
     }
   ]
 }
