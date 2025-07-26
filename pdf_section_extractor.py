@@ -50,32 +50,119 @@ class PDFSectionExtractor:
             return self._extract_with_pdfminer_fallback(pdf_path)
     
     def _extract_with_pymupdf(self, pdf_path: Union[str, Path]) -> Dict:
-        """Extract sections using PyMuPDF with heading detection."""
+        """Extract sections using PyMuPDF with heading detection based on font analysis."""
         if not PYMUPDF_AVAILABLE:
             raise ImportError("PyMuPDF not available")
             
         doc = fitz.open(str(pdf_path))
+        sections = []
+        current_section = None
+        total_pages = len(doc)
         
-        # Extract all text with structure
-        all_text = ""
-        page_texts = {}
+        try:
+            for page_num in range(total_pages):
+                page = doc[page_num]
+                page_number = page_num + 1
+                
+                # Get structured text with font information
+                text_dict = page.get_text("dict")
+                
+                for block in text_dict["blocks"]:
+                    if "lines" not in block: 
+                        continue
+                    
+                    # Extract text and check for heading characteristics
+                    block_text = ""
+                    is_heading = False
+                    
+                    for line in block["lines"]:
+                        for span in line["spans"]:
+                            span_text = span.get("text", "").strip()
+                            if span_text:
+                                block_text += span_text + " "
+                                
+                                # Check if this span looks like a heading
+                                # Bold font (flags & 16) or font name contains 'Bold'
+                                font_flags = span.get("flags", 0)
+                                font_name = span.get("font", "")
+                                
+                                if (font_flags & 16) or ("Bold" in font_name):
+                                    is_heading = True
+                    
+                    block_text = block_text.strip()
+                    if not block_text:
+                        continue
+                    
+                    # Skip bullet points as headings
+                    if block_text.startswith("•") or block_text.startswith("o "):
+                        is_heading = False
+                    
+                    if is_heading and len(block_text) < 200:  # Reasonable heading length
+                        # Start a new section
+                        if current_section and current_section["content"].strip():
+                            sections.append(current_section)
+                        
+                        current_section = {
+                            "title": block_text,
+                            "content": "",
+                            "start_page": page_number,
+                            "end_page": page_number,
+                            "section_type": "heading"
+                        }
+                    else:
+                        # Add content to current section
+                        if current_section is None:
+                            # Create initial section if no heading found yet
+                            current_section = {
+                                "title": "Document Content",
+                                "content": "",
+                                "start_page": page_number,
+                                "end_page": page_number,
+                                "section_type": "content"
+                            }
+                        
+                        current_section["content"] += " " + block_text
+                        current_section["end_page"] = page_number
+            
+            # Add the final section
+            if current_section and current_section["content"].strip():
+                sections.append(current_section)
+            
+        finally:
+            doc.close()
         
-        for page_num in range(len(doc)):
-            page = doc[page_num]
-            page_text = page.get_text()
-            page_texts[page_num + 1] = page_text
-            all_text += f"\\n[PAGE {page_num + 1}]\\n{page_text}\\n"
+        # Clean up sections
+        cleaned_sections = []
+        for section in sections:
+            # Clean content
+            content = re.sub(r'\s+', ' ', section["content"]).strip()
+            if len(content) >= self.min_section_length:
+                section["content"] = content[:self.max_section_length]
+                cleaned_sections.append(section)
         
-        doc.close()
-        
-        # Identify sections using heading patterns
-        sections = self._identify_sections(all_text, page_texts)
+        # If no sections found, create a fallback
+        if not cleaned_sections:
+            doc_reopen = fitz.open(str(pdf_path))
+            try:
+                full_text = ""
+                for page in doc_reopen:
+                    full_text += page.get_text() + " "
+                
+                cleaned_sections = [{
+                    "title": "Complete Document",
+                    "content": full_text[:self.max_section_length],
+                    "start_page": 1,
+                    "end_page": total_pages,
+                    "section_type": "document"
+                }]
+            finally:
+                doc_reopen.close()
         
         return {
             "filename": Path(pdf_path).name,
-            "total_pages": len(page_texts),
-            "sections": sections,
-            "full_text": all_text
+            "total_pages": total_pages,
+            "sections": cleaned_sections,
+            "full_text": ""  # Not needed for new approach
         }
     
     def _extract_with_pdfminer_fallback(self, pdf_path: Union[str, Path]) -> Dict:

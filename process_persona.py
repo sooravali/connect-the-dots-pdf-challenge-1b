@@ -151,9 +151,12 @@ class PersonaDrivenAnalyzer:
             # STAGE 4: Section Prioritization
             logger.info("STAGE 4: Section Prioritization")
             
+            # Smart section selection with diversity
+            selected_sections = self._smart_section_selection(ranked_sections, 5)
+            
             # Select top-k sections with importance ranking
             extracted_sections = []
-            for rank, (section, score) in enumerate(ranked_sections, 1):
+            for rank, (section, score) in enumerate(selected_sections, 1):
                 extracted_sections.append({
                     "document": section["source_document"],
                     "section_title": section["title"],
@@ -166,9 +169,12 @@ class PersonaDrivenAnalyzer:
             # STAGE 5: Subsection Extraction & Refinement
             logger.info("STAGE 5: Subsection Extraction & Refinement")
             
+            # STAGE 5: Subsection Extraction & Refinement
+            logger.info("STAGE 5: Subsection Extraction & Refinement")
+            
             # Extract granular chunks from top sections and re-score
             subsection_analysis = []
-            for section, score in ranked_sections[:5]:  # Top 5 sections for detailed analysis
+            for section, score in selected_sections:  # Use selected sections instead of ranked_sections[:5]
                 
                 # Extract relevant subsections with granular chunking
                 subsections = self.semantic_analyzer.extract_relevant_subsections(
@@ -218,6 +224,47 @@ class PersonaDrivenAnalyzer:
                 input_config if 'input_config' in locals() else {}, 
                 []
             )
+    
+    def _smart_section_selection(self, ranked_sections: List[Tuple[Dict, float]], max_sections: int) -> List[Tuple[Dict, float]]:
+        """
+        Smart section selection ensuring document diversity and avoiding redundancy.
+        """
+        if len(ranked_sections) <= max_sections:
+            return ranked_sections
+        
+        selected = []
+        doc_counts = {}
+        
+        # First pass: select highest scoring sections with document diversity
+        for section, score in ranked_sections:
+            if len(selected) >= max_sections:
+                break
+                
+            doc_name = section["source_document"]
+            current_count = doc_counts.get(doc_name, 0)
+            
+            # Allow up to 2 sections per document, but prefer diversity
+            if current_count < 2 or len(selected) < max_sections // 2:
+                selected.append((section, score))
+                doc_counts[doc_name] = current_count + 1
+        
+        # Second pass: fill remaining slots with best remaining sections
+        remaining_slots = max_sections - len(selected)
+        if remaining_slots > 0:
+            used_indices = set()
+            for sel_section, _ in selected:
+                for i, (section, score) in enumerate(ranked_sections):
+                    if section == sel_section:
+                        used_indices.add(i)
+                        break
+            
+            for i, (section, score) in enumerate(ranked_sections):
+                if len(selected) >= max_sections:
+                    break
+                if i not in used_indices:
+                    selected.append((section, score))
+        
+        return selected[:max_sections]
     
     def process_documents(self, pdfs_directory: str, persona: str, job_to_be_done: str) -> Dict:
         """
