@@ -19,119 +19,109 @@
     ],
     "persona": "HR professional",
     "job_to_be_done": "Create and manage fillable forms for onboarding and compliance.",
-    "processing_timestamp": "2025-07-18T16:57:01.452440"
+    "processing_timestamp": "2025-07-26T19:53:17.424175"
   },
   "extracted_sections": [
     {
-      "document": "Learn Acrobat - Request e-signatures_1.pdf",
-      "section_title": "Untitled Section",
+      "document": "Learn Acrobat - Fill and Sign.pdf",
+      "section_title": "Fill and Sign PDF Forms \nYou can easily fill, sign, and share your documents using Acrobat's Fill...",
       "importance_rank": 1,
       "page_number": 1
     },
     {
-      "document": "Learn Acrobat - Fill and Sign.pdf",
-      "section_title": "Untitled Section",
+      "document": "Learn Acrobat - Request e-signatures_2.pdf",
+      "section_title": "Adobe LiveCycle Rights Management \n(ALCRM) servers \nAdobe LiveCycleRights Management (ALCRM) serv...",
       "importance_rank": 2,
       "page_number": 1
     },
     {
-      "document": "Learn Acrobat - Request e-signatures_2.pdf",
-      "section_title": "Untitled Section",
+      "document": "Test Your Acrobat Exporting Skills.pdf",
+      "section_title": "Export Expert: Test Your Acrobat Exporting Skills \n \nWelcome to the ultimate test of your Acrobat...",
       "importance_rank": 3,
       "page_number": 1
     },
     {
-      "document": "Learn Acrobat - Share_2.pdf",
-      "section_title": "Untitled Section",
+      "document": "Learn Acrobat - Request e-signatures_1.pdf",
+      "section_title": "Send a document to get signatures from \nothers \n1. Open the PDF form in Acrobat or Acrobat Reader...",
       "importance_rank": 4,
       "page_number": 1
     },
     {
-      "document": "Learn Acrobat - Generative AI_2.pdf",
-      "section_title": "Untitled Section",
+      "document": "Learn Acrobat - Generative AI_1.pdf",
+      "section_title": "Overview of generative AI features \nUse the generative AI features in Acrobat and Acrobat Reader to quickly scan through \nlengthy, complex PDF content and get answers or generate a summary. \n \nNote: The generative AI features in Acrobat and Acrobat Reader support English, French, \nGerman, Spanish, Italian, Portuguese, or Japanese. To understand the governing terms, \nreview Adobe's Generative AI User Guidelines. To understand Adobe's data handling \npractices, see Content usage and handling practices. \n \nThe AI-powered features in Acrobat and Acrobat Reader support multiple document types, \nincluding PDFs, DOCX, PPTX, TXT, and RTF files. AI Assistant supports Microsoft Teams and \nZoom meeting transcripts. The capabilities improve comprehension and save time across \nvarious document types. \n \nAI Assistant quickly gets answers to your questions based on your documents in a \ncomprehensive and informative way. It can analyze multiple documents to uncover \nsimilarities, differences, and key patterns. With AI Assistant, you can make targeted requests, \nsuch as highlighting the differences between PDF contracts. It links to text and data table \nsources within the document. It also suggests follow-up questions for you based on the \nprimary question. AI Assistant uses the latest AI language model, GPT 4o, to provide more \naccurate and clear answers to your queries based on more citations. It can extract information \naccurately from tables and complex documents. \n \nGenerative summary automatically provides an outline with headings and summaries to \nhighlight key points in the document. The feature generates key insights that help you easily \ncomprehend the PDF content. For a speedier response, it processes PDF content in chunks \nand simultaneously streams summaries. \n \nYou can access the generative AI features in Adobe Acrobat Reader, Adobe Acrobat desktop \non both Windows and macOS, on Acrobat online, and within Acrobat extensions for Google",
       "importance_rank": 5,
       "page_number": 1
     },
     {
-      "document": "Learn Acrobat - Export_2.pdf",
-      "section_title": "Untitled Section",
+      "document": "Learn Acrobat - Export_1.pdf",
+      "section_title": "Export \nYou can save your changes to an Adobe PDF or PDF Portfolio in the original PDF or in a co...",
       "importance_rank": 6,
       "page_number": 1
     },
     {
-      "document": "The Ultimate PDF Sharing Checklist.pdf",
-      "section_title": "Untitled Section",
+      "document": "Learn Acrobat - Edit_1.pdf",
+      "section_title": "Edit text in a PDF \nOpen the PDF you want to edit in Acrobat, and then select Edit in the global ...",
       "importance_rank": 7,
       "page_number": 1
     },
     {
-      "document": "Learn Acrobat - Share_1.pdf",
-      "section_title": "Untitled Section",
+      "document": "Learn Acrobat - Create and Convert_1.pdf",
+      "section_title": "What’s the best way to create a PDF? \nYou can create PDFs from documents printed on paper, Micros...",
       "importance_rank": 8,
       "page_number": 1
     },
     {
-      "document": "Learn Acrobat - Edit_1.pdf",
-      "section_title": "Untitled Section",
+      "document": "The Ultimate PDF Sharing Checklist.pdf",
+      "section_title": "The Ultimate PDF Sharing Checklist \nSharing PDFs can be a breeze with Adobe Acrobat. Whether you'...",
       "importance_rank": 9,
       "page_number": 1
     },
     {
-      "document": "Test Your Acrobat Exporting Skills.pdf",
-      "section_title": "Untitled Section",
+      "document": "Learn Acrobat - Share_2.pdf",
+      "section_title": "Add comments while viewing a PDF \ndocument \nYou can now use quick actions in a floating toolbar t...",
       "importance_rank": 10,
       "page_number": 1
     }
   ],
   "subsection_analysis": [
     {
-      "document": "Learn Acrobat - Request e-signatures_1.pdf",
-      "refined_text": "When the signer adds his or her signature in the signature field and then clicks \nthe Click to sign button, the agreement is sent to the next signer with a link to sign, and so \non. Once the agreement is signed by all the signers, everyone gets a copy of the signed \nagreement.",
-      "page_number": 1
-    },
-    {
-      "document": "Learn Acrobat - Request e-signatures_1.pdf",
-      "refined_text": "It displays the fields progressively as you \nenter the details. The left pane provides information on getting signatures from others \nworkflow. In the recipients field, add recipient email addresses in the order you want \nthe document to be signed. Request signatures – Add recipients \n3.",
-      "page_number": 1
-    },
-    {
       "document": "Learn Acrobat - Fill and Sign.pdf",
-      "refined_text": "To adjust the size of your signature, hover over the blue circle at the corner and \nthen hold and drag it as desired. Note:  \nIf you want to use an image as your signature or initials: \n• \nSign your name in black ink on a clean, blank sheet of whit.",
-      "page_number": 1
-    },
-    {
-      "document": "Learn Acrobat - Fill and Sign.pdf",
-      "refined_text": "It automatically displays the default checkmark or the selected radio field symbol. 2. Select the radio option field to enter the symbol. 3. To change the symbol, select the field again, and then from the menu, ellipsis ( ) and \nthen select another symbol. It marks the field with the selected symbol.",
+      "refined_text": "Fill and Sign PDF Forms \nYou can easily fill, sign, and share your documents using Acrobat's Fill...:\n[PAGE 1] Fill and Sign PDF Forms You can easily fill, sign, and share your documents using Acrobat's Fill & Sign tool. Types of PDF forms [PAGE 2] Types of PDF forms - Interactive forms: These contain fields that you can select and fill in. - Flat forms: These do not have interactive fields. It could be a paper form or PDF that hasn’t been optimized for form filling. The Fill & Sign tool automatically detects the form fields like text fields, comb fields, checkboxes, and radio buttons. You can manually add text and other symbols anywhere on the form using the Fill & Sign tool if required. You can complete the forms by entering information and adding your signatures. Acrobat also allows you to send your completed forms to others and securely save them in Adobe cloud storage. Fill and sign PDF forms To complete and sign PDF forms, open the form in Acrobat and then select E-Sign from the ",
       "page_number": 1
     },
     {
       "document": "Learn Acrobat - Request e-signatures_2.pdf",
-      "refined_text": "Digital signatures are a secure and efficient way to electronically sign and authenticate \ndocuments, ensuring their authenticity and integrity. By using digital signatures, you can sign \ndocuments quickly and easily, and be confident that they can’t be tampered with or forged.",
+      "refined_text": "Adobe LiveCycle Rights Management \n(ALCRM) servers \nAdobe LiveCycleRights Management (ALCRM) serv...:\n[PAGE 1] Adobe LiveCycle Rights Management (ALCRM) servers Adobe LiveCycleRights Management (ALCRM) servers let you define centralized policies to control access to documents. The policies are stored on the ALCRM server. You require server access to use them. ALCRM servers embed user access information in documents. Therefore, specify document recipients in ALCRM policies. Alternatively, let the ALCRM server retrieve the list of recipients from LDAP directories. Use ALCRM servers to set permissions for separate document tasks, for example opening, editing, and printing. You can also define document auditing policies on ALCRM servers. What is a digital signature?",
       "page_number": 1
     },
     {
       "document": "Learn Acrobat - Request e-signatures_2.pdf",
-      "refined_text": "From the Verification box in the Digital Signatures panel, select More. \\n[PAGE 3]\\n4.",
+      "refined_text": "Adobe LiveCycle Rights Management \n(ALCRM) servers \nAdobe LiveCycleRights Management (ALCRM) serv...:\nIn the 'Signature Verification Preferences' dialog that opens, you can control the following settings: - Set automatic validation of signatures: With the Verify signatures when the document is opened check box selected, Acrobat automatically validates all signatures in a PDF when you open the document. - Set verification behavior: The options specify methods that determine which plug-in to choose when verifying a signature. The appropriate plug-in is often selected automatically. Contact your system administrator about specific plug-in requirements for validating signatures. - Check the revocation status of certificates: With the Require certificate revocation checking to succeed... checkbox selected, Acrobat checks certificates against a list of excluded certificates during validation. If you deselect the check box, the revocation status for Acrobat Approval [PAGE 4] signatures is ign",
       "page_number": 1
     },
     {
-      "document": "Learn Acrobat - Share_2.pdf",
-      "refined_text": "• \nActions on image selection: When you select an image you can perform actions like \nAdd sticky note, Highlight image, Redact image, Copy Image, and Edit a PDF.",
+      "document": "Test Your Acrobat Exporting Skills.pdf",
+      "refined_text": "Export Expert: Test Your Acrobat Exporting Skills \n \nWelcome to the ultimate test of your Acrobat...:\n[PAGE 1] Export Expert: Test Your Acrobat Exporting Skills Welcome to the ultimate test of your Acrobat exporting skills! Think you know everything about saving, converting, and exporting PDFs? It's time to put your knowledge to the test. Dive into real-world scenarios, answer intriguing questions, and see if you have what it takes to be a true PDF exporting pro 1. Yes or No: Can you save a PDF in text format to use with a screen reader? 2. True or False: Saving a digitally signed PDF invalidates the signature. 3. Scenario: Imagine you're working on an important report and your computer crashes. Do you rely on the Autosave feature to recover your work or start from scratch? 4. Yes or No: Can you recover the last saved version of a PDF if you accidentally delete it? 5. True or False: The Autosave feature in Acrobat saves your work every 15 minutes by default. 6. Scenario: You're prepari",
       "page_number": 1
     },
     {
-      "document": "Learn Acrobat - Share_2.pdf",
-      "refined_text": "\\n[PAGE 8]\\nAdd reactions to comments on shared files \nYou can now enhance your reviews on shared PDFs in Acrobat by adding reaction emojis to \ncomments, making the reviews more interactive. To add reactions: \n1. Open a shared PDF and select the Comments panel. 2. Select.",
+      "document": "Learn Acrobat - Request e-signatures_1.pdf",
+      "refined_text": "Send a document to get signatures from \nothers \n1. Open the PDF form in Acrobat or Acrobat Reader...:\nChange the default text in the Subject & Message area as appropriate. Optional: If you want to add more people just for information, use the Add CC button to add their email addresses to the CC list. Enter the desired information and do one of the following: [PAGE 3] - (Optional) To explore advanced options including signer authentication, reminders, and more, click More Options. - To add form fields and specify where to sign, click Specify where to sign. Request signatures - Add Cc, subject, message, More Options - If you don't want to use the More Options, skip the next optional step. 4. (Optional) Click More Options, if you want to specify advanced options, such as signer authentication, reminders, and more. - By default, the Complete in Order setting is turned on. The numbers by the email addresses reflect the participation order. If you do not want to follow any particular order f",
       "page_number": 1
     },
     {
-      "document": "Learn Acrobat - Generative AI_2.pdf",
-      "refined_text": "Select Clear chat history. A confirmation dialog box will appear, asking you to confirm \nyour selection. Select Clear history. If you don't want to clear your chat history, \nselect Cancel. Clear chat history from the AI assistant\\n[PAGE 3]\\nYour chat history is cleared.",
+      "document": "Learn Acrobat - Request e-signatures_1.pdf",
+      "refined_text": "Send a document to get signatures from \nothers \n1. Open the PDF form in Acrobat or Acrobat Reader...:\n[PAGE 8] Signer's experience A signer receives an email with a link to sign the agreement. Also, if the signer uses Acrobat or Acrobat Reader desktop application, the signer sees a notification that an agreement has been shared for signing. Note: Signers are not required to sign up or purchase any Adobe product to sign agreements. They can sign agreements using a web browser, mobile device, or Acrobat / Acrobat Reader desktop application. Send in bulk allows you to upload a form and use that as a template to create and send many (hundreds!) of unique agreements, each dedicated to one external signer. Each agreement is insulated from the others and contains its own audit report.",
       "page_number": 1
     },
     {
-      "document": "Learn Acrobat - Generative AI_2.pdf",
-      "refined_text": "Chat history\\n[PAGE 2]\\nClear chat history \nYou can clear the chat history and ensure that the AI Assistant treats the document as new so \nyou can ask fresh questions. To clear chat history: \n1. Open the document for which you wish to clear the chat history. Select   in the upper \nright. 2.",
+      "document": "Learn Acrobat - Generative AI_1.pdf",
+      "refined_text": "Overview of generative AI features \nUse the generative AI features in Acrobat and Acrobat Reader to quickly scan through \nlengthy, complex PDF content and get answers or generate a summary. \n \nNote: The generative AI features in Acrobat and Acrobat Reader support English, French, \nGerman, Spanish, Italian, Portuguese, or Japanese. To understand the governing terms, \nreview Adobe's Generative AI User Guidelines. To understand Adobe's data handling \npractices, see Content usage and handling practices. \n \nThe AI-powered features in Acrobat and Acrobat Reader support multiple document types, \nincluding PDFs, DOCX, PPTX, TXT, and RTF files. AI Assistant supports Microsoft Teams and \nZoom meeting transcripts. The capabilities improve comprehension and save time across \nvarious document types. \n \nAI Assistant quickly gets answers to your questions based on your documents in a \ncomprehensive and informative way. It can analyze multiple documents to uncover \nsimilarities, differences, and key p",
+      "page_number": 1
+    },
+    {
+      "document": "Learn Acrobat - Generative AI_1.pdf",
+      "refined_text": "Overview of generative AI features \nUse the generative AI features in Acrobat and Acrobat Reader to quickly scan through \nlengthy, complex PDF content and get answers or generate a summary. \n \nNote: The generative AI features in Acrobat and Acrobat Reader support English, French, \nGerman, Spanish, Italian, Portuguese, or Japanese. To understand the governing terms, \nreview Adobe's Generative AI User Guidelines. To understand Adobe's data handling \npractices, see Content usage and handling practices. \n \nThe AI-powered features in Acrobat and Acrobat Reader support multiple document types, \nincluding PDFs, DOCX, PPTX, TXT, and RTF files. AI Assistant supports Microsoft Teams and \nZoom meeting transcripts. The capabilities improve comprehension and save time across \nvarious document types. \n \nAI Assistant quickly gets answers to your questions based on your documents in a \ncomprehensive and informative way. It can analyze multiple documents to uncover \nsimilarities, differences, and key p",
       "page_number": 1
     }
   ]
