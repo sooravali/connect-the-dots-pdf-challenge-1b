@@ -35,15 +35,20 @@ RUN pip install --no-cache-dir --user torch==2.0.1+cpu torchvision==0.15.2+cpu -
     && pip install --no-cache-dir --user -r requirements.txt
 
 # Pre-download and cache the sentence transformer model in a dedicated directory
-# Create a simple script to ensure proper caching
+# Create a simple script to ensure proper caching and download NLTK data
 RUN echo "from sentence_transformers import SentenceTransformer; \
           import os; \
+          import nltk; \
           print('Cache directories:', \
           os.environ.get('SENTENCE_TRANSFORMERS_HOME'), \
           os.environ.get('TRANSFORMERS_CACHE')); \
           model = SentenceTransformer('all-MiniLM-L6-v2'); \
           print('Model loaded successfully and cached to:', \
-          os.environ.get('SENTENCE_TRANSFORMERS_HOME'))" > /build/cache_model.py \
+          os.environ.get('SENTENCE_TRANSFORMERS_HOME')); \
+          print('Downloading NLTK data...'); \
+          nltk.download('punkt'); \
+          nltk.download('stopwords'); \
+          print('NLTK data downloaded successfully')" > /build/cache_model.py \
     && python /build/cache_model.py \
     && ls -la /build/model_cache
 
