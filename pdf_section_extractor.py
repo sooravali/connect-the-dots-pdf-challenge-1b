@@ -32,11 +32,22 @@ class PDFSectionExtractor:
         Returns:
             Dictionary with document metadata and sections
         """
-        try:
-            return self._extract_with_pymupdf(pdf_path)
-        except Exception as e:
-            logger.warning(f"PyMuPDF extraction failed for {pdf_path}: {e}")
+        # First perform triage to determine document type
+        doc_type = self._perform_document_triage(pdf_path)
+        logger.info(f"Document type detected: {doc_type} for {pdf_path}")
+        
+        if doc_type == "image_based":
+            # For image-based PDFs, OCR would be ideal but is not implemented
+            # Fall back to pdfminer which sometimes can extract text from image PDFs
+            logger.warning(f"Image-based PDF detected: {pdf_path}. OCR would be ideal but using fallback.")
             return self._extract_with_pdfminer_fallback(pdf_path)
+        else:
+            # For text-based or hybrid PDFs, use PyMuPDF
+            try:
+                return self._extract_with_pymupdf(pdf_path)
+            except Exception as e:
+                logger.warning(f"PyMuPDF extraction failed for {pdf_path}: {e}")
+                return self._extract_with_pdfminer_fallback(pdf_path)
     
     def _extract_with_pymupdf(self, pdf_path: Union[str, Path]) -> Dict:
         """Extract sections using PyMuPDF with heading detection."""
@@ -52,17 +63,93 @@ class PDFSectionExtractor:
             page_texts[page_num + 1] = page_text
             all_text += f"\\n[PAGE {page_num + 1}]\\n{page_text}\\n"
         
+        # Perform document triage during extraction
+        document_type = self._analyze_document_content(doc)
+        
         doc.close()
         
         # Identify sections using heading patterns
         sections = self._identify_sections(all_text, page_texts)
         
-        return {
+        result = {
             "filename": Path(pdf_path).name,
             "total_pages": len(page_texts),
             "sections": sections,
-            "full_text": all_text
+            "full_text": all_text,
+            "document_type": document_type
         }
+        
+        return result
+        
+    def _analyze_document_content(self, doc) -> str:
+        """Analyze document content to determine its characteristics."""
+        # Check a sample of pages (first, middle, last)
+        total_pages = len(doc)
+        
+        if total_pages == 0:
+            return "empty"
+            
+        # Sample pages to analyze
+        pages_to_check = [0]  # Always check first page
+        
+        if total_pages > 2:
+            pages_to_check.append(total_pages // 2)  # Middle page
+            
+        if total_pages > 1:
+            pages_to_check.append(total_pages - 1)  # Last page
+            
+        # Check for forms, tables, images
+        has_forms = False
+        has_tables = False
+        has_images = False
+        has_text = False
+        
+        for page_num in pages_to_check:
+            page = doc[page_num]
+            
+            # Check for forms
+            if len(page.widgets()) > 0:
+                has_forms = True
+                
+            # Check for images
+            if len(page.get_images()) > 0:
+                has_images = True
+                
+            # Check for text
+            if page.get_text().strip():
+                has_text = True
+                
+            # Rough table detection (looking for grid-like structures)
+            # This is simplified and not fully reliable
+            lines = page.get_drawings()
+            horizontal_lines = 0
+            vertical_lines = 0
+            
+            for line in lines:
+                if "rect" in line:
+                    rect = line["rect"]
+                    width = rect[2] - rect[0]
+                    height = rect[3] - rect[1]
+                    
+                    if width > 3 * height:  # Likely horizontal line
+                        horizontal_lines += 1
+                    elif height > 3 * width:  # Likely vertical line
+                        vertical_lines += 1
+                        
+            if horizontal_lines >= 3 and vertical_lines >= 3:
+                has_tables = True
+                
+        # Determine document type based on content
+        if has_forms:
+            return "form"
+        elif has_tables and has_text:
+            return "table_document"
+        elif has_images and not has_text:
+            return "image_only"
+        elif has_images and has_text:
+            return "mixed_content"
+        else:
+            return "text_document"
     
     def _extract_with_pdfminer_fallback(self, pdf_path: Union[str, Path]) -> Dict:
         """Fallback extraction using pdfminer.six."""
@@ -100,7 +187,7 @@ class PDFSectionExtractor:
         """Identify document sections using heading patterns and page breaks."""
         sections = []
         
-        # Enhanced section detection patterns
+        # Enhanced section detection patterns - expanded for better coverage
         section_patterns = [
             # Standard section identifiers
             r'\\n\\s*(?:Chapter|Section|Part|Appendix)\\s+\\d+[^\\n]*\\n',
@@ -114,6 +201,12 @@ class PDFSectionExtractor:
             r'\\n\\s*(?:Overview|Introduction|Background|Executive Summary|Key Findings|Analysis|Recommendations)[^\\n]*\\n',
             # Headers with formatting indicators (bullets, etc.)
             r'\\n\\s*[•\\*\\-–—]\\s+[A-Z][^\\n]*\\n',
+            # Headers with numbering patterns
+            r'\\n\\s*(?:[A-Z]\\.|[ivxlcdm]+\\.|[IVXLCDM]+\\.)\\s+[A-Z][^\\n]*\\n',
+            # FAQ or Q&A patterns
+            r'\\n\\s*(?:Q|Question)\\s*(?:\\d+|\\.)?\\s*[:\\.]?\\s*[A-Z][^\\n]*\\n',
+            # Form field headers and labels
+            r'\\n\\s*[A-Z][a-zA-Z\\s]+\\s*:\\s*\\_*\\s*\\n',
             # Page breaks - important for fallback segmentation
             r'\\n\\[PAGE\\s+\\d+\\]\\n',
         ]
@@ -399,6 +492,66 @@ class PDFSectionExtractor:
             return 'references'
         else:
             return 'content'
+    
+    def _perform_document_triage(self, pdf_path: Union[str, Path]) -> str:
+        """
+        Perform triage to determine if a PDF is text-based, image-based, or hybrid.
+        Uses PyMuPDF to analyze content blocks and their types.
+        
+        Returns:
+            str: "text_based", "image_based", or "hybrid"
+        """
+        try:
+            doc = fitz.open(str(pdf_path))
+            text_area_total = 0
+            image_area_total = 0
+            total_pages = len(doc)
+            
+            # Check at least the first 3 pages or all pages if fewer
+            pages_to_check = min(3, total_pages)
+            
+            for page_num in range(pages_to_check):
+                page = doc[page_num]
+                
+                # Get all content blocks on the page
+                blocks = page.get_text("blocks")
+                
+                page_text_area = 0
+                page_image_area = 0
+                
+                for block in blocks:
+                    # Get block coordinates
+                    x0, y0, x1, y1, block_text, block_type, _ = block
+                    block_area = (x1 - x0) * (y1 - y0)
+                    
+                    # Check if this is an image block
+                    if '<image:' in block_text:
+                        page_image_area += block_area
+                    else:
+                        page_text_area += block_area
+                
+                text_area_total += page_text_area
+                image_area_total += page_image_area
+            
+            doc.close()
+            
+            # Determine document type based on content areas
+            # Using thresholds to categorize document
+            if text_area_total == 0 and image_area_total > 0:
+                return "image_based"
+            elif image_area_total > 0 and image_area_total / (text_area_total + image_area_total) > 0.8:
+                # If images cover more than 80% of content area
+                return "image_based"
+            elif image_area_total > 0 and image_area_total / (text_area_total + image_area_total) > 0.3:
+                # If images cover between 30% and 80% of content area
+                return "hybrid"
+            else:
+                return "text_based"
+                
+        except Exception as e:
+            logger.warning(f"Error during document triage: {e}")
+            # Default to text_based if triage fails
+            return "text_based"
     
     def _create_page_based_sections(self, page_texts: Dict) -> List[Dict]:
         """Create sections based on pages when no clear structure is found."""
