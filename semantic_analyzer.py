@@ -243,7 +243,14 @@ class SemanticAnalyzer:
             
             # Check if extraction was successful and sufficient
             if subsections and len(subsections) >= max_subsections // 2:
-                return subsections
+                # Check if any subsections are too large and need condensing
+                condensed_subsections = []
+                for subsection in subsections:
+                    if len(subsection.get("text", "")) > 1000:
+                        condensed_text = self.condense_oversized_chunk(subsection.get("text", ""), max_length=1000)
+                        subsection["text"] = condensed_text
+                    condensed_subsections.append(subsection)
+                return condensed_subsections
             
             # If tier 1 failed to produce good results, escalate to tier 2
             logger.info("Escalating to Tier 2 extraction for better results")
@@ -386,6 +393,10 @@ class SemanticAnalyzer:
         # Clean up common PDF extraction artifacts
         text = text.replace("• ", "- ")  # Replace bullets with dashes
         text = re.sub(r'([.:;,!?])\s*\n', r'\1 ', text)  # Fix sentence breaks
+        
+        # Condense if text is too long (over 1000 characters)
+        if len(text) > 1000:
+            text = self.condense_oversized_chunk(text, max_length=1000)
         
         # Add section title as context if available and not already in the text
         if section_title and section_title.strip() and not text.startswith(section_title):
@@ -809,6 +820,97 @@ class PersonaQueryBuilder:
             
         return final_query
     
+    def condense_oversized_chunk(self, text: str, max_length: int = 1000) -> str:
+        """
+        Condense an oversized text chunk using extractive summarization.
+        Uses Sumy for extractive summarization if available, otherwise falls back to truncation.
+        
+        Args:
+            text: Text to condense
+            max_length: Maximum length of condensed text
+            
+        Returns:
+            Condensed text
+        """
+        if len(text) <= max_length:
+            return text
+            
+        # First, try to use Sumy for extractive summarization
+        if SUMY_AVAILABLE:
+            try:
+                logger.info(f"Using Sumy to condense text from {len(text)} to ~{max_length} characters")
+                
+                # Import necessary NLTK data
+                try:
+                    import nltk
+                    nltk.data.find('tokenizers/punkt')
+                except (LookupError, ImportError):
+                    try:
+                        nltk.download('punkt')
+                    except Exception as e:
+                        logger.warning(f"Failed to download NLTK punkt data: {e}")
+                
+                # Create parser and summarizer
+                language = "english"  # Default to English
+                parser = PlaintextParser.from_string(text, Tokenizer(language))
+                stemmer = Stemmer(language)
+                
+                # Determine number of sentences based on ratio of current text to max_length
+                ratio = max_length / len(text) * 1.5  # Use slightly more sentences than strict ratio
+                num_sentences = max(3, int(len(parser.document.sentences) * ratio))
+                
+                # Try different summarizers in order of preference
+                summarizers = [
+                    LsaSummarizer(stemmer),
+                    LexRankSummarizer(stemmer),
+                    LuhnSummarizer(stemmer)
+                ]
+                
+                # Try each summarizer until one works
+                for summarizer in summarizers:
+                    try:
+                        summarizer.stop_words = get_stop_words(language)
+                        summary = summarizer(parser.document, num_sentences)
+                        condensed = " ".join([str(sentence) for sentence in summary])
+                        
+                        # If still too long, try again with fewer sentences
+                        if len(condensed) > max_length and num_sentences > 3:
+                            num_sentences = int(num_sentences * 0.7)  # Reduce by 30%
+                            summary = summarizer(parser.document, num_sentences)
+                            condensed = " ".join([str(sentence) for sentence in summary])
+                        
+                        # If successful, return the condensed text
+                        if condensed:
+                            if len(condensed) <= max_length or len(condensed) < len(text):
+                                logger.info(f"Successfully condensed text to {len(condensed)} characters using {summarizer.__class__.__name__}")
+                                return condensed
+                    except Exception as e:
+                        logger.warning(f"Summarizer {summarizer.__class__.__name__} failed: {e}")
+                        continue
+            
+            except Exception as e:
+                logger.warning(f"Sumy summarization failed: {e}")
+        
+        # Fallback to simple truncation with smart sentence boundary
+        logger.info("Using fallback truncation method for text condensation")
+        sentences = text.split('. ')
+        condensed = ""
+        
+        for sentence in sentences:
+            if len(condensed) + len(sentence) + 2 <= max_length:
+                if condensed:
+                    condensed += ". " + sentence
+                else:
+                    condensed = sentence
+            else:
+                break
+        
+        if condensed and not condensed.endswith('.'):
+            condensed += '.'
+            
+        logger.info(f"Fallback truncation condensed text to {len(condensed)} characters")
+        return condensed
+        
     @staticmethod
     def _extract_key_terms(text: str) -> List[str]:
         """
