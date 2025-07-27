@@ -13,60 +13,60 @@
     ],
     "persona": "Food Contractor",
     "job_to_be_done": "Prepare a vegetarian buffet-style dinner menu for a corporate gathering, including gluten-free items.",
-    "processing_timestamp": "2025-07-26T20:13:57.779280"
+    "processing_timestamp": "2025-07-27T07:30:24.746233"
   },
   "extracted_sections": [
     {
       "document": "Lunch Ideas.pdf",
-      "section_title": "Chicken Caesar Wrap \nIngredients: \n• \n1 whole wheat tortilla \n• \n1 cup cooked chicken breast, sli...",
+      "section_title": "Chicken Caesar Wrap",
       "importance_rank": 1,
       "page_number": 1
     },
     {
       "document": "Dinner Ideas - Mains_3.pdf",
-      "section_title": "• \nReturn chicken to the skillet and cook until heated through. \n• \nServe warm. \n \n \n \nPeking Duc...",
+      "section_title": "•  Return chicken to the skillet and cook until heated through.",
       "importance_rank": 2,
       "page_number": 1
     },
     {
       "document": "Dinner Ideas - Sides_4.pdf",
-      "section_title": "o Scramble eggs in the same pan. \no Add noodles, fish sauce, tamarind paste, sugar, and lime juic...",
+      "section_title": "o  Scramble eggs in the same pan.",
       "importance_rank": 3,
       "page_number": 1
     },
     {
-      "document": "Dinner Ideas - Mains_2.pdf",
-      "section_title": "• \n1 teaspoon thyme \n• \n1 teaspoon rosemary \n• \n1/4 cup olive oil \n• \nSalt and pepper to taste \nI...",
+      "document": "Dinner Ideas - Sides_2.pdf",
+      "section_title": "o  1 cup water",
       "importance_rank": 4,
       "page_number": 1
     },
     {
-      "document": "Dinner Ideas - Mains_1.pdf",
-      "section_title": "Beef Stroganoff \nIngredients: \n• \n1 pound beef sirloin, thinly sliced \n• \n1 small onion, diced \n•...",
+      "document": "Dinner Ideas - Mains_2.pdf",
+      "section_title": "•  1 teaspoon thyme",
       "importance_rank": 5,
       "page_number": 1
     },
     {
-      "document": "Dinner Ideas - Sides_1.pdf",
-      "section_title": "Acarajé \n• \nIngredients:  \no 2 cups black-eyed peas \no 1 small onion \no 2 cloves garlic \no 1 teas...",
+      "document": "Dinner Ideas - Mains_1.pdf",
+      "section_title": "Beef Stroganoff",
       "importance_rank": 6,
       "page_number": 1
     },
     {
-      "document": "Dinner Ideas - Sides_3.pdf",
-      "section_title": "o 2 cloves garlic \no 4 tomatoes \no 4 cups vegetable broth \no 1 teaspoon cumin \no 1 teaspoon coria...",
+      "document": "Dinner Ideas - Sides_1.pdf",
+      "section_title": "o  2 cups black-eyed peas",
       "importance_rank": 7,
       "page_number": 1
     },
     {
-      "document": "Dinner Ideas - Sides_2.pdf",
-      "section_title": "Churros \n• \nIngredients: \no 1 cup water \no 1/2 cup butter \no 1 cup flour \no 3 eggs \no 1/4 cup sug...",
+      "document": "Dinner Ideas - Sides_3.pdf",
+      "section_title": "o  2 cloves garlic",
       "importance_rank": 8,
       "page_number": 1
     },
     {
       "document": "Breakfast Ideas.pdf",
-      "section_title": "Pancakes \nIngredients: \n• \n1 cup all-purpose flour \n• \n2 tablespoons sugar \n• \n1 teaspoon baking ...",
+      "section_title": "1 cup all-purpose flour",
       "importance_rank": 9,
       "page_number": 1
     }
@@ -74,47 +74,52 @@
   "subsection_analysis": [
     {
       "document": "Lunch Ideas.pdf",
-      "refined_text": "Chicken Caesar Wrap \nIngredients: \n- \n1 whole wheat tortilla \n- \n1 cup cooked chicken breast, sli...:\nQuinoa Salad Ingredients: - 1 cup cooked quinoa - 1/2 cup cherry tomatoes, halved - 1/2 cucumber, diced - 1/4 cup red onion, finely chopped - 1/4 cup feta cheese, crumbled - 2 tablespoons olive oil - 1 tablespoon lemon juice - Salt and pepper to taste Instructions: - In a large bowl, combine the quinoa, tomatoes, cucumber, red onion, and feta cheese. - Drizzle with olive oil and lemon juice. - Season with salt and pepper, then toss to combine. Turkey and Avocado Sandwich Ingredients: - 2 slices whole grain bread - 4 slices turkey breast - 1/2 avocado, sliced - 1/2 cup spinach leaves - 1 tablespoon mustard or mayo Instructions: - Spread mustard or mayo on one slice of bread. - Layer the turkey, avocado, and spinach on top. - Top with the second slice of bread and cut in half. [PAGE 3] Greek Yogurt Parfait Ingredients: - 1 cup Greek yogurt - 1/2 cup granola - 1/2 cup mixed berries (straw",
+      "refined_text": "Chicken Caesar Wrap:\n1 whole wheat tortilla - 1 cup cooked chicken breast, sliced - 1 cup romaine lettuce, chopped - - 2 tablespoons Caesar dressing - 2 tablespoons grated Parmesan cheese - Optional: croutons for extra crunch.",
       "page_number": 1
     },
     {
       "document": "Lunch Ideas.pdf",
-      "refined_text": "Chicken Caesar Wrap \nIngredients: \n- \n1 whole wheat tortilla \n- \n1 cup cooked chicken breast, sli...:\n- Drizzle with balsamic glaze and season with salt and pepper. - Top with the second slice of bread and cut in half. Chicken Salad Lettuce Wraps Ingredients: - 1 cup cooked chicken breast, shredded - 1/4 cup mayonnaise - 1 tablespoon Dijon mustard - 1 celery stalk, diced - 1/4 cup red grapes, halved - Salt and pepper to taste - Lettuce leaves for serving Instructions: - In a bowl, combine the chicken, mayonnaise, Dijon mustard, celery, and grapes. - Season with salt and pepper. - Serve in lettuce leaves. Veggie and Hummus Wrap Ingredients: - 1 whole wheat tortilla - 1/2 cup hummus - 1/2 cup cucumber, sliced - 1/2 cup bell pepper, sliced [PAGE 5] - 1/4 cup shredded carrots - 1/4 cup baby spinach Instructions: - Lay the tortilla flat and spread the hummus evenly. - Add the cucumber, bell pepper, carrots, and spinach. - Roll up the tortilla tightly and slice in half. Egg Salad Sandwich In",
+      "refined_text": "Chicken Caesar Wrap:\n- Lay the tortilla flat and spread the Caesar dressing evenly. - Add the chicken, lettuce, and Parmesan cheese. - Roll up the tortilla tightly and slice in half.",
       "page_number": 1
     },
     {
       "document": "Dinner Ideas - Mains_3.pdf",
-      "refined_text": "- \nReturn chicken to the skillet and cook until heated through. \n- \nServe warm. \n \n \n \nPeking Duc...:\n- In a bowl, mix soy sauce, honey, hoisin sauce, rice vinegar, minced garlic, five-spice powder, and grated ginger. - Brush the mixture over the duck. - Place duck on a roasting rack and roast for 1 hour and 30 minutes until skin is crispy. - Let rest before carving. - Serve duck with sliced green onions and mandarin pancakes. Pork Schnitzel Ingredients: - 4 pork cutlets - 1/2 cup flour - 2 eggs, beaten - 1 cup breadcrumbs - 1/4 cup vegetable oil - 1 lemon, sliced - Salt and pepper to taste Instructions: - Season pork cutlets with salt and pepper. - Dredge cutlets in flour, dip in beaten eggs, and coat with breadcrumbs. - In a large skillet, heat vegetable oil over medium heat. - Cook cutlets until golden and crispy on both sides. - Serve with lemon slices. [PAGE 2] Quiche Lorraine Ingredients: - 1 pie crust - 6 slices bacon, cooked and crumbled - 1 small onion, diced - 1 cup grated Gr",
+      "refined_text": "- Return chicken to the skillet and cook until heated through.:\n- Return chicken to the skillet and cook until heated through. - Serve warm.",
       "page_number": 1
     },
     {
       "document": "Dinner Ideas - Mains_3.pdf",
-      "refined_text": "- \nReturn chicken to the skillet and cook until heated through. \n- \nServe warm. \n \n \n \nPeking Duc...:\n- Cook ziti according to package instructions, then drain. - In a skillet, cook ground beef or sausage with diced onion and minced garlic until browned. - Stir in marinara sauce, oregano, salt, and pepper, and simmer for 10 minutes. - In a baking dish, layer half the ziti, half the sauce, dollops of ricotta, and half the mozzarella. Repeat layers. - Top with grated Parmesan cheese. - Bake for 25-30 minutes until bubbly and golden. - Serve warm. Butter Chicken Ingredients: - 1 pound boneless chicken thighs, cubed - 1 cup plain yogurt - 1 tablespoon lemon juice - 2 cloves garlic, minced - 1 teaspoon grated ginger - 1 teaspoon garam masala - 1 teaspoon turmeric - 1 teaspoon cumin - 1 can (14.5 ounces) tomato puree - 1/2 cup heavy crea.",
+      "refined_text": "- Return chicken to the skillet and cook until heated through.:\n- 1 whole duck - 1/4 cup soy sauce - 1/4 cup honey - 2 tablespoons hoisin sauce - 2 tablespoons rice vinegar - 2 cloves garlic, minced - 1 teaspoon five-spice powder - 1 teaspoon grated ginger - 1/4 cup green onions, sliced - Mandarin pancakes for serving.",
       "page_number": 1
     },
     {
       "document": "Dinner Ideas - Sides_4.pdf",
-      "refined_text": "o Scramble eggs in the same pan. \no Add noodles, fish sauce, tamarind paste, sugar, and lime juic...:\nPajeon (Pancakes) - Ingredients: o 1 cup flour o 1 cup water o 1 egg o 1/2 cup green onions o 1/2 cup seafood (optional) o 1 tablespoon soy sauce o 1 tablespoon sesame oil - Instructions: o Mix flour, water, and beaten egg in a bowl. o Add chopped green onions and seafood (if using). o Heat sesame oil in a pan and pour in batter. o Cook until golden on both sides. o Serve with soy sauce for dipping. Pan con Tomate - Ingredients: o 1 baguette o 4 tomatoes o 2 cloves garlic o 1/4 cup olive oil o 1 teaspoon salt - Instructions: o Slice baguette and toast until golden. o Rub toasted bread with cut garlic cloves. o Grate tomatoes and spread on bread. o Drizzle with olive oil and sprinkle with salt. o Serve immediately. Paneer Tikka - Ingredients: o 1 pound paneer o 1/2 cup yogurt o 1 tablespoon lemon juice o 1 teaspoon cumin o 1 teaspoon coriander o 1 teaspoon garam masala o 1 teaspoon turm",
+      "refined_text": "o Scramble eggs in the same pan.:\no 1 cup flour o 1 cup water o 1 egg o 1/2 cup green onions o 1/2 cup seafood (optional) o 1 tablespoon soy sauce o 1 tablespoon sesame oil.",
       "page_number": 1
     },
     {
       "document": "Dinner Ideas - Sides_4.pdf",
-      "refined_text": "o Scramble eggs in the same pan. \no Add noodles, fish sauce, tamarind paste, sugar, and lime juic...:\nPolenta - Ingredients: o 1 cup cornmeal o 4 cups water o 1 teaspoon salt o 2 tablespoons butter o 1/2 cup grated Parmesan cheese - Instructions: o Bring water and salt to a boil. o Gradually whisk in cornmeal. o Reduce heat and cook, stirring constantly, until thickened (about 30 minutes). [PAGE 5] o Stir in butter and Parmesan cheese. o Serve warm. Potato Salad - Ingredients: o 4 potatoes o 2 eggs o 1 small onion o 1/2 cup mayonnaise o 2 tablespoons mustard o 1 tablespoon vinegar o 1 teaspoon salt o 1/2 teaspoon pepper - Instructions: o Boil potatoes until tender, then dice. o Hard-boil eggs, then chop. o Mi.",
+      "refined_text": "o Scramble eggs in the same pan.:\no Mix flour, water, and beaten egg in a bowl. o Add chopped green onions and seafood (if using). o Heat sesame oil in a pan and pour in batter. o Cook until golden on both sides. o Serve with soy sauce for dipping.",
+      "page_number": 1
+    },
+    {
+      "document": "Dinner Ideas - Sides_2.pdf",
+      "refined_text": "o 1 cup water:\no 1 cup water o 1/2 cup butter o 1 cup flour o 3 eggs o 1/4 cup sugar o 1 teaspoon cinnamon o Oil for frying.",
+      "page_number": 1
+    },
+    {
+      "document": "Dinner Ideas - Sides_2.pdf",
+      "refined_text": "o 1 cup water:\no Bring water and butter to a boil. o Add flour and stir until a dough forms. o Remove from heat and beat in eggs one at a time. o Heat oil in a pan. o Pipe dough into hot oil and fry until golden. o Drain on paper towels and roll in a mixture of sugar and cinnamon. o Serve warm.",
       "page_number": 1
     },
     {
       "document": "Dinner Ideas - Mains_2.pdf",
-      "refined_text": "- \n1 teaspoon thyme \n- \n1 teaspoon rosemary \n- \n1/4 cup olive oil \n- \nSalt and pepper to taste \nI...:\nShrimp and Grits Ingredients: - 1 pound shrimp, peeled and deveined - 1 cup grits - 4 cups water - 1/2 cup cheddar cheese, shredded - 1/4 cup butter - 1 small onion, diced - 2 cloves garlic, minced [PAGE 2] - 1/4 cup bacon, chopped - 1/4 cup green onions, sliced - Salt and pepper to taste Instructions: - In a pot, bring water to a boil and stir in grits. - Reduce heat and simmer until thickened, then stir in shredded cheddar cheese and butter. - In a skillet, cook chopped bacon until crispy, then set aside. - In the same skillet, sauté diced onion and minced garlic until softened. - Add shrimp and cook until pink and opaque. - Stir in cooked bacon and sliced green onions. - Serve shrimp mixture over grits. Spaghetti Carbonara Ingredients: - 1 pound spaghetti - 4 eggs - 1 cup grated Parmesan cheese - 1/2 cup pancetta, diced - 2 cloves garlic, minced - 1/4 cup heavy cream (optional) - S",
+      "refined_text": "- 1 teaspoon thyme:\n- 1 teaspoon thyme - 1 teaspoon rosemary - 1/4 cup olive oil - Salt and pepper to taste.",
       "page_number": 1
     },
     {
-      "document": "Dinner Ideas - Mains_1.pdf",
-      "refined_text": "Beef Stroganoff \nIngredients: \n- \n1 pound beef sirloin, thinly sliced \n- \n1 small onion, diced \n- ...:\n- Add diced onion and minced garlic, sauté until translucent. - Add sliced beef and cook until browned. - Stir in mushrooms and cook until tender. - Sprinkle flour over the mixture and stir to combine. - Gradually add beef broth, stirring constantly until the sauce thickens. - Stir in sour cream and paprika, season with salt and pepper. - Simmer for a few minutes until heated through. - Serve over egg noodles or rice. Chicken Parmesan Ingredients: - 4 boneless, skinless chicken breasts - 1 cup breadcrumbs - 1/2 cup grated Parmesan cheese - 1 cup marinara sauce - 1 cup mozzarella cheese, shredded - 2 eggs, beaten - 1/2 cup flour - 1/4 cup olive oil - Salt and pepper to taste Instructions: - Preheat oven to 375°F (190°C). - Season chicken breasts with salt and pepper. - Dredge chicken in flour, dip in beaten eggs, and coat with a mixture of breadcrumbs and grated Parmesan cheese. - Hea",
-      "page_number": 1
-    },
-    {
-      "document": "Dinner Ideas - Mains_1.pdf",
-      "refined_text": "Beef Stroganoff \nIngredients: \n- \n1 pound beef sirloin, thinly sliced \n- \n1 small onion, diced \n- ...:\n- Add minced garlic and sauté until fragrant. - Add shrimp and cook until pink and opaque. - Remove shrimp from the skillet and set aside. - Pour white wine, chicken broth, and lemon juice into the skillet, simmer until reduced by half. - Return shrimp to the skillet and toss to coat in the sauce. - Season with salt and pepper, stir in chopped parsley. - Serve over cooked pasta. Beef Tacos Ingredients: - 1 pound ground beef - 1 small onion, diced - 2 cloves garlic, minced - 1 packet taco seasoning - 1/2 cup water - Taco shells or tortillas [PAGE 5] - Shredded lettuce, diced tomatoes, shredded cheese, sour cream, and salsa for toppings Instructions: - In a skillet, cook ground beef over medium heat until browned. - Add diced onion and minced garlic, sauté until softened. - Stir in taco seasoning and water, simmer until thickened. - Serve beef mixture in taco shells or tortillas with ",
+      "document": "Dinner Ideas - Mains_2.pdf",
+      "refined_text": "- 1 teaspoon thyme:\nIn a large baking dish, layer diced eggplant, zucchini, bell pepper, onion, and tomatoes. In a bowl, mix minced garlic, olive oil, thyme, rosemary, salt, and pepper.",
       "page_number": 1
     }
   ]
