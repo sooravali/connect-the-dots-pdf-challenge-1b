@@ -36,13 +36,24 @@ class PersonaDrivenAnalyzer:
     """
     
     def __init__(self):
+        logger.info("Initializing PersonaDrivenAnalyzer with multi-stage pipeline")
+        logger.info("Stage 1: PDF Section Extraction with document triage")
         self.section_extractor = PDFSectionExtractor()
+        
+        logger.info("Stage 2: Semantic Analysis with tiered extraction strategy")
         self.semantic_analyzer = SemanticAnalyzer()
+        
+        logger.info("Stage 3: Persona-Driven Query Building")
         self.query_builder = PersonaQueryBuilder()
         
     def process_collection(self, input_file: Path, pdf_directory: Path) -> Dict:
         """
         Process a document collection based on input configuration.
+        
+        Implements a tiered processing approach:
+        1. Document triage - Identify document types (text/image/hybrid)
+        2. Adaptive extraction - Use optimal strategy based on document characteristics
+        3. Schema validation - Ensure output conforms to expected format
         
         Args:
             input_file: Path to challenge1b_input.json
@@ -80,6 +91,7 @@ class PersonaDrivenAnalyzer:
             # Process each document
             all_sections = []
             processed_docs = []
+            document_types = {}
             
             for doc_info in documents_info:
                 filename = doc_info.get("filename", "")
@@ -90,7 +102,10 @@ class PersonaDrivenAnalyzer:
                     continue
                 
                 logger.info(f"Processing document: {filename}")
+                
+                # Extract document sections with automatic triage
                 doc_data = self.section_extractor.extract_document_sections(pdf_path)
+                document_types[filename] = getattr(doc_data, 'document_type', 'unknown')
                 
                 # Add document info to sections
                 for section in doc_data.get("sections", []):
@@ -98,6 +113,8 @@ class PersonaDrivenAnalyzer:
                     all_sections.append(section)
                 
                 processed_docs.append(filename)
+            
+            logger.info(f"Document types detected: {document_types}")
             
             if not all_sections:
                 logger.warning("No sections extracted from any documents")
@@ -127,8 +144,18 @@ class PersonaDrivenAnalyzer:
             doc_count = len(processed_docs)
             sections_per_doc = max(1, 10 // doc_count)  # Distribute subsections evenly
             
-            # Process top sections for detailed analysis
+            # Process top sections for detailed analysis using tiered approach
             top_sections = ranked_sections[:min(5, len(ranked_sections))]
+            
+            # Set initial extraction tier based on document complexity
+            complex_docs = [doc for doc, doc_type in document_types.items() 
+                           if doc_type in ['mixed_content', 'image_based', 'table_document']]
+            
+            # Start with tier 1 for simple docs, tier 2 for complex docs
+            initial_tier = 2 if complex_docs else 1
+            self.semantic_analyzer.extraction_tier = initial_tier
+            
+            logger.info(f"Starting extraction at tier {initial_tier} based on document complexity")
             
             for section, score in top_sections:
                 # Extract more subsections from high-scoring sections
@@ -141,6 +168,11 @@ class PersonaDrivenAnalyzer:
                     max_subsections = min(max_subsections + 2, 8)  # Add more but cap at 8
                 
                 logger.info(f"Extracting up to {max_subsections} subsections from section: {section['title']}")
+                
+                # For very important sections, ensure we use tier 2
+                if score > 0.9 and self.semantic_analyzer.extraction_tier == 1:
+                    logger.info("High-importance section detected, using tier 2 extraction")
+                    self.semantic_analyzer.extraction_tier = 2
                 
                 subsections = self.semantic_analyzer.extract_relevant_subsections(
                     section, query, max_subsections=max_subsections
