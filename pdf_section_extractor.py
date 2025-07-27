@@ -158,9 +158,28 @@ class PDFSectionExtractor:
         try:
             text = pdfminer_extract_text(str(pdf_path))
             
-            # Create a single section if no structure can be detected
+            # Try to extract a meaningful title from the first few lines
+            lines = text.split('\n')
+            title = "Untitled Section"
+            
+            for line in lines[:20]:  # Check first 20 lines
+                line = line.strip()
+                if line and len(line) > 5 and len(line) < 150:
+                    # Skip obvious non-titles (single words, page numbers, etc.)
+                    if len(line.split()) > 1 and not re.match(r'^\d+$', line):
+                        title = line
+                        break
+            
+            # If no good title found, use the filename but try to make it more descriptive
+            if title == "Untitled Section":
+                filename = Path(pdf_path).name
+                # Remove file extension and replace underscores/hyphens with spaces
+                title = re.sub(r'\.\w+$', '', filename)
+                title = re.sub(r'[_\-]', ' ', title)
+            
+            # Create a single section with better title
             sections = [{
-                "title": f"Content from {Path(pdf_path).name}",
+                "title": title,
                 "content": text,
                 "start_page": 1,
                 "end_page": 1,
