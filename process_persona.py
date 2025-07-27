@@ -11,6 +11,7 @@ import json
 import sys
 import time
 import logging
+import re
 from pathlib import Path
 from multiprocessing import Pool, cpu_count
 from typing import Dict, List, Tuple, Optional
@@ -40,8 +41,17 @@ class PersonaDrivenAnalyzer:
         logger.info("Stage 1: PDF Section Extraction with document triage")
         self.section_extractor = PDFSectionExtractor()
         
-        logger.info("Stage 2: Semantic Analysis with tiered extraction strategy")
+        logger.info("Stage 2: Semantic Analysis with three-pillar framework")
         self.semantic_analyzer = SemanticAnalyzer()
+        
+        # Load semantic analyzer extensions
+        try:
+            from semantic_analyzer_extensions import integrate_with_semantic_analyzer
+            logger.info("Loading semantic analyzer extensions for multi-document intelligence")
+            self.semantic_analyzer = integrate_with_semantic_analyzer(self.semantic_analyzer)
+            logger.info("Successfully loaded multi-document intelligence extensions")
+        except Exception as e:
+            logger.warning(f"Failed to load semantic analyzer extensions: {e}")
         
         logger.info("Stage 3: Persona-Driven Query Building")
         self.query_builder = PersonaQueryBuilder()
@@ -107,9 +117,21 @@ class PersonaDrivenAnalyzer:
                 doc_data = self.section_extractor.extract_document_sections(pdf_path)
                 document_types[filename] = getattr(doc_data, 'document_type', 'unknown')
                 
-                # Add document info to sections
+                # Add document info to sections and ensure titles are properly set
                 for section in doc_data.get("sections", []):
                     section["source_document"] = filename
+                    
+                    # Ensure section has a proper title - fix the issue with missing titles
+                    if not section.get("title") or len(section.get("title", "").strip()) < 3:
+                        # Extract a title from the first 50 chars of content if available
+                        if section.get("content"):
+                            # Get first line or first 50 chars
+                            first_line = section["content"].split('\n')[0][:100]
+                            section["title"] = first_line.strip()
+                        else:
+                            # Use document name as fallback
+                            section["title"] = f"Content from {filename}"
+                    
                     all_sections.append(section)
                 
                 processed_docs.append(filename)
@@ -122,7 +144,42 @@ class PersonaDrivenAnalyzer:
             
             logger.info(f"Extracted {len(all_sections)} sections from {len(processed_docs)} documents")
             
-            # Rank sections by relevance
+            # Organize sections by document for multi-document intelligence
+            docs_with_sections = {}
+            for section in all_sections:
+                doc_name = section["source_document"]
+                if doc_name not in docs_with_sections:
+                    docs_with_sections[doc_name] = {
+                        "title": doc_name,
+                        "sections": []
+                    }
+                docs_with_sections[doc_name]["sections"].append(section)
+            
+            # Try to use cross-document intelligence if available
+            cross_doc_connections = None
+            if hasattr(self.semantic_analyzer, 'identify_connections'):
+                try:
+                    logger.info("Identifying cross-document connections")
+                    cross_doc_connections = self.semantic_analyzer.identify_connections(
+                        list(docs_with_sections.values())
+                    )
+                    logger.info(f"Found connections between {len(cross_doc_connections.get('connections', {}))} sections")
+                except Exception as e:
+                    logger.warning(f"Failed to identify cross-document connections: {e}")
+            
+            # Extract content from document collection if multi-doc intelligence is available
+            multi_doc_content = None
+            if hasattr(self.semantic_analyzer, 'extract_from_document_collection'):
+                try:
+                    logger.info("Using multi-document intelligence for extraction")
+                    multi_doc_content = self.semantic_analyzer.extract_from_document_collection(
+                        list(docs_with_sections.values()), query, chars_limit=10000
+                    )
+                    logger.info(f"Extracted {len(multi_doc_content)} chars using multi-document intelligence")
+                except Exception as e:
+                    logger.warning(f"Failed to extract using multi-document intelligence: {e}")
+            
+            # Rank sections by relevance (fallback approach)
             ranked_sections = self.semantic_analyzer.rank_sections(
                 query, all_sections, top_k=10
             )
@@ -130,32 +187,100 @@ class PersonaDrivenAnalyzer:
             # Generate extracted sections output
             extracted_sections = []
             for rank, (section, score) in enumerate(ranked_sections, 1):
-                extracted_sections.append({
+                section_entry = {
                     "document": section["source_document"],
                     "section_title": section["title"],
                     "importance_rank": rank,
                     "page_number": section.get("start_page", 1)
-                })
+                }
+                
+                # Add cross-document connection information if available
+                if cross_doc_connections and "connections" in cross_doc_connections:
+                    # Create a unique section ID that matches our connection mapping
+                    doc_id = section["source_document"]
+                    section_idx = next((i for i, s in enumerate(docs_with_sections[doc_id]["sections"]) 
+                                    if s.get("title") == section["title"]), None)
+                    
+                    if section_idx is not None:
+                        section_id = f"{doc_id}_section_{section_idx}"
+                        connections = cross_doc_connections["connections"].get(section_id, [])
+                        
+                        if connections:
+                            top_connection = connections[0]
+                            section_entry["related_to"] = {
+                                "document": top_connection["doc_title"],
+                                "section": top_connection["title"],
+                                "relevance": round(top_connection["score"], 2)
+                            }
+                
+                extracted_sections.append(section_entry)
             
             # Generate subsection analysis with enhanced context and formatting
             subsection_analysis = []
             
-            # Determine optimal number of subsections based on document count
-            doc_count = len(processed_docs)
-            sections_per_doc = max(1, 10 // doc_count)  # Distribute subsections evenly
+            # If multi-document content is available, use it first
+            if multi_doc_content:
+                logger.info("Using multi-document intelligence results for subsection analysis")
+                
+                # Split the multi-document content by separators and create subsections
+                parts = multi_doc_content.split("\n\n---\n\n")
+                
+                for part in parts:
+                    if not part.strip():
+                        continue
+                        
+                    # Extract document name from the content if possible
+                    doc_name = processed_docs[0]  # Default to first document
+                    page_number = 1
+                    
+                    # Try to extract document and page information
+                    doc_match = re.search(r'From document:\s*([^\n]+)', part)
+                    if doc_match:
+                        potential_doc = doc_match.group(1).strip()
+                        # Find closest matching document name
+                        for doc in processed_docs:
+                            if potential_doc in doc or doc in potential_doc:
+                                doc_name = doc
+                                break
+                    
+                    # Try to extract page number
+                    page_match = re.search(r'\[Page\s+(\d+)\]', part)
+                    if page_match:
+                        page_number = int(page_match.group(1))
+                    
+                    # Clean up the text
+                    refined_text = clean_text(part)
+                    
+                    subsection_analysis.append({
+                        "document": doc_name,
+                        "refined_text": refined_text[:1000],
+                        "page_number": page_number
+                    })
+                
+                # If we have enough subsections, skip the standard processing
+                if len(subsection_analysis) >= 5:
+                    logger.info(f"Using {len(subsection_analysis)} subsections from multi-document intelligence")
             
-            # Process top sections for detailed analysis using tiered approach
-            top_sections = ranked_sections[:min(5, len(ranked_sections))]
-            
-            # Set initial extraction tier based on document complexity
-            complex_docs = [doc for doc, doc_type in document_types.items() 
-                           if doc_type in ['mixed_content', 'image_based', 'table_document']]
-            
-            # Start with tier 1 for simple docs, tier 2 for complex docs
-            initial_tier = 2 if complex_docs else 1
-            self.semantic_analyzer.extraction_tier = initial_tier
-            
-            logger.info(f"Starting extraction at tier {initial_tier} based on document complexity")
+            # If we don't have enough subsections from multi-document processing, use standard approach
+            if not subsection_analysis or len(subsection_analysis) < 3:
+                logger.info("Using standard subsection extraction as fallback or supplement")
+                
+                # Determine optimal number of subsections based on document count
+                doc_count = len(processed_docs)
+                sections_per_doc = max(1, 10 // doc_count)  # Distribute subsections evenly
+                
+                # Process top sections for detailed analysis using tiered approach
+                top_sections = ranked_sections[:min(5, len(ranked_sections))]
+                
+                # Set initial extraction tier based on document complexity
+                complex_docs = [doc for doc, doc_type in document_types.items() 
+                               if doc_type in ['mixed_content', 'image_based', 'table_document']]
+                
+                # Start with tier 1 for simple docs, tier 2 for complex docs
+                initial_tier = 2 if complex_docs else 1
+                self.semantic_analyzer.extraction_tier = initial_tier
+                
+                logger.info(f"Starting extraction at tier {initial_tier} based on document complexity")
             
             for section, score in top_sections:
                 # Extract more subsections from high-scoring sections
