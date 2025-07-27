@@ -30,6 +30,7 @@ class SemanticAnalyzer:
     """
     Semantic analysis engine for persona-driven document intelligence.
     Uses sentence embeddings (preferred) or TF-IDF (fallback) for relevance scoring.
+    Implements a tiered extraction strategy for optimal results.
     """
     
     def __init__(self, model_name: str = "all-MiniLM-L6-v2"):
@@ -54,6 +55,10 @@ class SemanticAnalyzer:
             except Exception as e:
                 logger.warning(f"Failed to load embedding model, will use TF-IDF fallback: {e}")
                 self.use_embeddings = False
+                
+        # Tiered extraction configuration
+        self.extraction_tier = 1  # Start with Tier 1 (fastest)
+        self.max_tier = 2  # Currently implementing up to Tier 2 (Tier 3 would be LLM-based)
     
     def _load_embedding_model(self):
         """Load the sentence transformer model."""
@@ -206,6 +211,10 @@ class SemanticAnalyzer:
                                    max_subsections: int = 3) -> List[Dict]:
         """
         Extract the most relevant subsections from a section with context preservation.
+        Implements a tiered extraction strategy:
+        
+        Tier 1 (Fast): Uses keyword matching and TF-IDF for quick extraction
+        Tier 2 (Precise): Uses embeddings-based semantic similarity with context preservation
         
         Args:
             section: Section dictionary with content
@@ -227,6 +236,20 @@ class SemanticAnalyzer:
         start_page = section.get("start_page", 1)
         end_page = section.get("end_page", start_page)
         
+        # Implement tiered extraction strategy
+        if self.extraction_tier == 1:
+            # Tier 1: Fast extraction using keyword matching
+            subsections = self._extract_subsections_tier1(content, query, section_title, start_page, end_page, max_subsections)
+            
+            # Check if extraction was successful and sufficient
+            if subsections and len(subsections) >= max_subsections // 2:
+                return subsections
+            
+            # If tier 1 failed to produce good results, escalate to tier 2
+            logger.info("Escalating to Tier 2 extraction for better results")
+            self.extraction_tier = 2
+        
+        # Tier 2: More precise extraction with context preservation
         # Split content into paragraphs/sentences
         chunks = self._split_into_chunks(content)
         
@@ -386,6 +409,85 @@ class SemanticAnalyzer:
             
         return text.strip()
     
+    def _extract_subsections_tier1(self, content: str, query: str, 
+                                 section_title: str, start_page: int, end_page: int, 
+                                 max_subsections: int) -> List[Dict]:
+        """
+        Tier 1 extraction using fast keyword matching and basic relevance scoring.
+        
+        This is a faster alternative to the full semantic matching, useful for:
+        1. Simple documents with clear structure
+        2. When quick results are needed with lower precision requirements
+        3. As a first pass before potentially escalating to more complex methods
+        """
+        # Extract key terms from query
+        query_terms = self._extract_query_terms(query)
+        if not query_terms:
+            return []
+            
+        # Split content into paragraphs
+        paragraphs = re.split(r'\n\s*\n|\r\n\s*\r\n', content)
+        if not paragraphs:
+            return []
+            
+        # Score paragraphs based on query term frequency
+        scored_paragraphs = []
+        for i, para in enumerate(paragraphs):
+            if len(para) < 50:  # Skip very short paragraphs
+                continue
+                
+            # Count query term occurrences
+            para_lower = para.lower()
+            term_matches = sum(1 for term in query_terms if term in para_lower)
+            
+            # Calculate position-based score (prioritize earlier paragraphs slightly)
+            position_score = 1.0 - (i / max(1, len(paragraphs)))
+            
+            # Combine scores
+            relevance_score = (0.8 * term_matches / max(1, len(query_terms))) + (0.2 * position_score)
+            
+            scored_paragraphs.append((para, relevance_score, i))
+            
+        # Sort by score and take top paragraphs
+        scored_paragraphs.sort(key=lambda x: x[1], reverse=True)
+        top_paragraphs = scored_paragraphs[:max_subsections]
+        
+        # Sort back by original order for context coherence
+        top_paragraphs.sort(key=lambda x: x[2])
+        
+        # Convert to subsections
+        subsections = []
+        for para, score, idx in top_paragraphs:
+            # Estimate page number based on paragraph position
+            relative_pos = idx / max(1, len(paragraphs))
+            page = start_page
+            if end_page > start_page:
+                page = int(start_page + relative_pos * (end_page - start_page))
+                
+            text = self._prepare_subsection_text(para, section_title)
+            subsections.append({
+                "text": text,
+                "page": page
+            })
+            
+        return subsections
+    
+    def _extract_query_terms(self, query: str) -> List[str]:
+        """Extract key terms from query for matching."""
+        # Simple stopword list for filtering
+        stopwords = {'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with',
+                   'by', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'have', 'has'}
+                   
+        # Extract terms with basic cleaning
+        terms = []
+        words = re.findall(r'\b[a-zA-Z][a-zA-Z\-]+\b', query.lower())
+        
+        for word in words:
+            if len(word) > 2 and word not in stopwords:
+                terms.append(word)
+                
+        return terms
+        
     def _prepare_section_text(self, section: Dict) -> str:
         """Prepare section text for analysis."""
         title = section.get("title", "")
