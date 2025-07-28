@@ -67,16 +67,24 @@ For more details on our implementation approach and methodology, see our **[appr
 ### Building the Image
 
 ```bash
-docker build --platform linux/amd64 -t pdf-persona-analyzer:latest .
+docker build --platform linux/amd64 -t connect-the-dots-pdf-challenge-1b:latest .
 ```
 
 ### Running the Solution
 
+The solution processes each collection individually. For each collection, run:
+
 ```bash
-docker run --rm -v $(pwd)/input:/app/input -v $(pwd)/output:/app/output --network none pdf-persona-analyzer:latest
+docker run --rm \
+  -v "$(pwd)/Collection 1:/app/input" \
+  -v "$(pwd)/Collection 1:/app/output" \
+  --network none \
+  connect-the-dots-pdf-challenge-1b:latest
 ```
 
-The container automatically processes all collections found in the `/app/input` directory and generates corresponding outputs in `/app/output`.
+Replace `Collection 1` with the appropriate collection directory (`Collection 2`, `Collection 3`, etc.).
+
+The container processes the collection found in the `/app/input` directory and generates the output in `/app/output`. Note that both input and output are mapped to the same collection directory for convenience.
 
 ## Configuration
 
